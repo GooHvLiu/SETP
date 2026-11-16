@@ -1,0 +1,39 @@
+version: 2
+updates:
+  - package-ecosystem: npm
+    directory: "/"
+    schedule:
+      interval: weekly
+    open-pull-requests-limit: 5
+    groups:
+      prisma:
+        patterns:
+          - "@prisma/*"
+          - "prisma"
+      test-and-lint:
+        patterns:
+          - "vitest"
+          - "@vitest/*"
+          - "eslint"
+          - "@eslint/*"
+          - "typescript-eslint"
+          - "prettier"
+    ignore:
+      - dependency-name: "tsoa"
+        update-types: ["version-update:semver-major"]
+      - dependency-name: "typescript"
+        update-types: ["version-update:semver-major"]
+      - dependency-name: "express"
+        update-types: ["version-update:semver-major"]
+      - dependency-name: "pino"
+        update-types: ["version-update:semver-major"]
+      - dependency-name: "bcryptjs"
+        update-types: ["version-update:semver-major"]
+      - dependency-name: "dotenv-expand"
+        update-types: ["version-update:semver-major"]
+
+  - package-ecosystem: github-actions
+    directory: "/"
+    schedule:
+      interval: weekly
+    open-pull-requests-limit: 3

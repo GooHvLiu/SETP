@@ -1,0 +1,11 @@
+node_modules/
+dist/
+data/
+logs/
+uploads/
+coverage/
+src/routes/routes.ts
+src/swagger/swagger.json
+prisma/migrations/
+package-lock.json
+README.md

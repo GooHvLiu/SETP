@@ -1,0 +1,61 @@
+name: 功能请求
+description: 提出可验收的改进或新能力
+title: "[Feature] "
+body:
+  - type: markdown
+    attributes:
+      value: |
+        请描述问题与目标，不要只给实现方案。可以验收的请求更容易排期。
+  - type: dropdown
+    id: area
+    attributes:
+      label: 目标范围
+      options:
+        - 认证 / 权限 / 会话
+        - 配置 / 字典 / 菜单
+        - 邮件 / 通知 / 帮助中心
+        - 数据库 / 迁移 / seed
+        - Docker / 部署
+        - 文档 / CI
+        - 其他
+    validations:
+      required: true
+  - type: textarea
+    id: problem
+    attributes:
+      label: 要解决的问题
+      description: 当前有什么不便、风险或缺口，影响谁。
+    validations:
+      required: true
+  - type: textarea
+    id: proposal
+    attributes:
+      label: 期望方案
+      description: 说明目标行为、接口或交付物形态。
+    validations:
+      required: true
+  - type: textarea
+    id: acceptance
+    attributes:
+      label: 验收标准
+      description: 用可执行命令、断言或检查项表达。
+      placeholder: |
+        - 命令 ... 退出码为 0
+        - 接口 ... 返回 ...
+        - 文档 ... 包含 ...
+    validations:
+      required: true
+  - type: textarea
+    id: alternatives
+    attributes:
+      label: 备选方案与影响
+      description: 兼容性、迁移成本、对现有契约的影响。
+  - type: checkboxes
+    id: checklist
+    attributes:
+      label: 检查清单
+      options:
+        - label: 已搜索现有 Issue，未发现重复
+          required: true
+        - label: 已在仓库文档中确认当前没有同类能力
+          required: true

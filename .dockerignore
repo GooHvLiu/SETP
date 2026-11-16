@@ -1,0 +1,17 @@
+node_modules/
+dist/
+coverage/
+data/
+logs/
+uploads/
+backups/
+.git/
+.github/
+.tmp*
+*.log
+*.db
+.env
+.env.local
+.env.*
+!.env.example
+test/

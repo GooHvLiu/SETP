@@ -1,0 +1,66 @@
+name: setp-backend
+
+services:
+  mysql:
+    image: mysql:8.4
+    restart: unless-stopped
+    environment:
+      MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD:?set MYSQL_ROOT_PASSWORD in .env}
+      MYSQL_DATABASE: setp
+      MYSQL_USER: ${MYSQL_USER:-setp}
+      MYSQL_PASSWORD: ${MYSQL_PASSWORD:?set MYSQL_PASSWORD in .env}
+      TZ: Asia/Shanghai
+    command: --character-set-server=utf8mb4 --collation-server=utf8mb4_unicode_ci
+    ports:
+      # 宿主机 3306 被本机 MySQL 占用时，用 MYSQL_HOST_PORT=3307 暴露容器 MySQL
+      - "${MYSQL_HOST_PORT:-3306}:3306"
+    volumes:
+      - mysql_data:/var/lib/mysql
+    healthcheck:
+      test: ["CMD", "mysqladmin", "ping", "-h", "127.0.0.1", "-uroot", "-p${MYSQL_ROOT_PASSWORD:?set MYSQL_ROOT_PASSWORD in .env}"]
+      interval: 10s
+      timeout: 5s
+      retries: 10
+      start_period: 30s
+
+  app:
+    build:
+      context: .
+      dockerfile: Dockerfile
+      args:
+        NODE_DIST_URL: ${NODE_DIST_URL:-https://nodejs.org/download/release}
+    restart: unless-stopped
+    depends_on:
+      mysql:
+        condition: service_healthy
+    environment:
+      NODE_ENV: production
+      APP_PORT: 3000
+      APP_HOST: 0.0.0.0
+      DB_TYPE: mysql
+      DATABASE_URL: mysql://${MYSQL_USER:-setp}:${MYSQL_PASSWORD:?set MYSQL_PASSWORD in .env}@mysql:3306/setp
+      DB_POOL_SIZE: ${DB_POOL_SIZE:-10}
+      CORS_ORIGINS: ${CORS_ORIGINS:-http://localhost:5173}
+      JWT_SECRET: ${JWT_SECRET:?set JWT_SECRET in .env}
+      JWT_EXPIRES_IN: ${JWT_EXPIRES_IN:-15m}
+      JWT_REFRESH_EXPIRES_IN: ${JWT_REFRESH_EXPIRES_IN:-7d}
+      ADMIN_USERNAME: ${ADMIN_USERNAME:-admin}
+      ADMIN_PASSWORD: ${ADMIN_PASSWORD:?set ADMIN_PASSWORD in .env}
+      SUPER_ADMIN_PASSWORD: ${SUPER_ADMIN_PASSWORD:?set SUPER_ADMIN_PASSWORD in .env}
+      ADMIN_RESET_PASSWORD: ${ADMIN_RESET_PASSWORD:?set ADMIN_RESET_PASSWORD in .env}
+      CONFIG_SECRET_KEY: ${CONFIG_SECRET_KEY:?set CONFIG_SECRET_KEY in .env}
+      TZ: Asia/Shanghai
+    ports:
+      - "3000:3000"
+    volumes:
+      - app_data:/app/data
+      - app_uploads:/app/uploads
+      - app_logs:/app/logs
+      - app_backups:/app/backups
+
+volumes:
+  mysql_data:
+  app_data:
+  app_uploads:
+  app_logs:
+  app_backups:

@@ -1,0 +1,303 @@
+// ============================================================
+// Express + TypeScript 后端框架模板 —— Prisma Schema
+// ------------------------------------------------------------
+// 设计约定：
+// 1. 字段 camelCase，通过 @map 映射数据库 snake_case 列
+// 2. 数据库二态：sqlite（默认，零配置）/ mysql（生产）
+//    ★ Prisma 7 新架构（Driver Adapters）：
+//      - 本文件是 SQLite 模型源，mysql 一份由 scripts/db/sync-schema.cjs 生成
+//      - schema 不写 url，连接串只在 prisma.config.ts 与 src/db/prisma.ts
+//      - 切库只改 .env 的 DB_TYPE 与 DATABASE_URL，CLI 自动选择对应
+//        schema / migrations 目录，不需要手改 provider
+// 3. 权限模型：完整 RBAC（用户-角色-菜单/权限点-按钮），
+//    通过 user_roles / role_menus 关联，User 无冗余 role 字段
+// ============================================================
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "sqlite"
+}
+
+// ---------------- 用户表 ----------------
+model User {
+  id           Int       @id @default(autoincrement())
+  username     String    @unique
+  passwordHash String    @map("password_hash")      // bcrypt 哈希
+  realName     String?   @map("real_name") @default("")
+  email        String    @default("")  // 邮箱（注册/创建用户必填；NOT NULL，历史数据兜底空串）
+  status       Int       @default(1)                // 1 正常 0 禁用
+  isSuper      Int       @map("is_super") @default(0)  // 超级管理员：1 隐藏并受保护（仅设计者维护）
+  mustChangePassword Int   @map("must_change_password") @default(0) // 首次登录强制改密：1 需改密，改密成功清零
+  lastLoginAt  DateTime? @map("last_login_at")
+  isDeleted    Int       @map("is_deleted") @default(0)  // 软删除：0 否 1 是
+  tokenVersion Int       @map("token_version") @default(0)  // 令牌版本号：改密/禁用/删除 +1，旧令牌立即失效
+  deletedAt    DateTime? @map("deleted_at")
+  createdAt    DateTime  @default(now()) @map("created_at")
+  updatedAt    DateTime  @updatedAt @map("updated_at")
+
+  // 关系
+  roles         UserRole[]
+  refreshTokens RefreshToken[]
+  notifications Notification[]
+  operationLogs OperationLog[]
+  passwordResetCodes PasswordResetCode[]
+
+  @@map("users")
+}
+
+// ---------------- RBAC：角色表 ----------------
+model Role {
+  id          Int      @id @default(autoincrement())
+  code        String   @unique          // 角色编码，如 admin / operator / viewer
+  name        String                     // 角色名称，如 管理员
+  description String?  @default("")
+  status      Int      @default(1)
+  createdAt   DateTime @default(now()) @map("created_at")
+  updatedAt   DateTime @updatedAt @map("updated_at")
+
+  users UserRole[]
+  menus RoleMenu[]
+
+  @@map("roles")
+}
+
+// ---------------- RBAC：菜单/权限表（目录·菜单·按钮三级） ----------------
+model Menu {
+  id         Int      @id @default(autoincrement())
+  parentId   Int      @map("parent_id") @default(0)   // 0 = 顶级
+  name       String                                   // 菜单/权限点名称
+  type       String   @default("MENU")                // DIR 目录 / MENU 菜单 / BUTTON 按钮
+  path       String?  @default("")                    // 前端路由路径
+  component  String?  @default("")                    // 前端组件路径
+  icon       String?  @default("")
+  group      String?  @default("") @map("menu_group") // 菜单分组标识（DIR/MENU 可选；空=前端不渲染该分组；列名避开 MySQL 保留字 GROUP）
+  permission String?  @default("")                    // 权限码，如 adminCenter:user:list
+  sort       Int      @default(0)
+  status     Int      @default(1)
+  visible    Int      @default(1)                     // 是否显示在侧边栏：1 显示 0 隐藏（有权限但不出现在菜单）
+  isDeleted  Int      @map("is_deleted") @default(0)
+  createdAt  DateTime @default(now()) @map("created_at")
+  updatedAt  DateTime @updatedAt @map("updated_at")
+
+  roles RoleMenu[]
+
+  @@map("menus")
+}
+
+// ---------------- RBAC：用户-角色关联表 ----------------
+model UserRole {
+  userId Int @map("user_id")
+  roleId Int @map("role_id")
+  user   User @relation(fields: [userId], references: [id], onDelete: Restrict)
+  role   Role @relation(fields: [roleId], references: [id], onDelete: Restrict)
+
+  @@id([userId, roleId])
+  @@map("user_roles")
+}
+
+// ---------------- RBAC：角色-菜单关联表 ----------------
+model RoleMenu {
+  roleId Int @map("role_id")
+  menuId Int @map("menu_id")
+  role   Role @relation(fields: [roleId], references: [id], onDelete: Cascade)
+  menu   Menu @relation(fields: [menuId], references: [id], onDelete: Cascade)
+
+  @@id([roleId, menuId])
+  @@map("role_menus")
+}
+
+// ---------------- 系统参数表 ----------------
+model SystemConfig {
+  id              Int      @id @default(autoincrement())
+  configKey       String   @unique @map("config_key")
+  configValue     String?  @map("config_value")
+  description     String?  @default("")
+  editable        Int      @default(1) // 1=可修改（前端可编辑） 0=锁定（前端禁用渲染，PUT 后端拦截）
+  configScope     String   @default("system") @map("config_scope") // system=系统设置域 super=超级设置域
+  configGroup     String   @default("") @map("config_group")
+  readScope       String   @default("all") @map("read_scope") // all=登录可读 super=仅超级设置接口可读
+  valueType       String   @default("string") @map("value_type") // string/number/boolean/enum/json
+  defaultValue    String?  @map("default_value")
+  validationJson  String?  @default("") @map("validation_json")
+  envKey          String?  @default("") @map("env_key")
+  restartRequired Int      @default(0) @map("restart_required")
+  sort            Int      @default(0)
+  status          Int      @default(1)
+  createdAt       DateTime @default(now()) @map("created_at")
+  updatedAt       DateTime @updatedAt @map("updated_at")
+
+  @@map("system_configs")
+}
+
+// ---------------- 操作日志表（业务审计） ----------------
+model OperationLog {
+  id          Int      @id @default(autoincrement())
+  category    String   @default("operation") // operation / login
+  userId      Int?     @map("user_id")
+  username    String?  @default("")
+  module      String?  @default("")     // 模块名，如 user
+  action      String?  @default("")     // 动作，如 CREATE/UPDATE/DELETE/LOGIN
+  result      String   @default("success") // success / failed / blocked
+  reason      String?  @default("")     // 失败时的错误码标识
+  target      String?  @default("")     // 操作对象，取路径末段或资源 id
+  description String?  @default("")
+  ip          String?  @default("")
+  userAgent   String?  @map("user_agent") @default("")
+  requestId   String?  @map("request_id")
+  createdAt   DateTime @default(now()) @map("created_at")
+
+  user User? @relation(fields: [userId], references: [id])
+
+  @@index([category, id])
+  @@index([username, id])
+  @@index([createdAt])
+  @@map("operation_logs")
+}
+
+// ---------------- 消息通知表 ----------------
+model Notification {
+  id          Int      @id @default(autoincrement())
+  userId      Int      @map("user_id")
+  category    String   @default("system") // system / security / business / announcement
+  type        String   @default("info")   // info / success / warning / error
+  title       String
+  content     String
+  titleKey    String?  @map("title_key")   // 系统通知标题 i18n key；管理员手写通知为空
+  contentKey  String?  @map("content_key") // 系统通知正文 i18n key；管理员手写通知为空
+  data        String   @default("{}")     // 扩展数据 JSON 字符串（同时作为 i18n 插值参数）
+  source      String   @default("")       // 来源模块，如 auth/user/session
+  link        String   @default("")       // 前端跳转路径，可为空
+  senderId    Int?     @map("sender_id")  // 管理员手动发送时的发送人
+  batchId     String?  @map("batch_id")   // 同一次发送的批次号
+  templateKey String?  @map("template_key")
+  emailStatus String   @map("email_status") @default("none") // none/pending/sent/failed/skipped
+  emailError  String?  @map("email_error")
+  isRead      Int      @map("is_read") @default(0)
+  readAt      DateTime? @map("read_at")
+  createdAt   DateTime @default(now()) @map("created_at")
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@index([userId, isRead, id])
+  @@index([batchId, id])
+  @@index([category, id])
+  @@index([createdAt])
+  @@map("notifications")
+}
+
+
+// ---------------- 安全：刷新令牌表 ----------------
+model RefreshToken {
+  id        Int      @id @default(autoincrement())
+  userId    Int      @map("user_id")
+  tokenHash String   @unique @map("token_hash")  // 只存哈希，不存明文；唯一约束支撑按哈希精查
+  expiresAt DateTime @map("expires_at")
+  revoked   Boolean  @default(false)     // 登出/吊销标记
+  createdAt DateTime @default(now()) @map("created_at")
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@index([userId])
+  @@map("refresh_tokens")
+}
+
+// ---------------- 安全：登录失败记录表 ----------------
+// 按用户名记录（登录时用户可能不存在，故不关联 User 表）
+model LoginAttempt {
+  id            Int       @id @default(autoincrement())
+  username      String    @unique
+  failedCount   Int       @map("failed_count") @default(0)
+  lockedUntil   DateTime? @map("locked_until")   // 锁定截止时间，null 未锁定
+  lastAttemptAt DateTime? @map("last_attempt_at")
+  updatedAt     DateTime  @updatedAt @map("updated_at")
+
+  @@map("login_attempts")
+}
+
+// ---------------- 数据字典：字典类型表 ----------------
+model DictType {
+  id        Int       @id @default(autoincrement())
+  typeCode  String    @unique @map("type_code")   // 如 order_status
+  typeName  String    @map("type_name")           // 如 订单状态
+  status    Int       @default(1)
+  remark    String?   @default("")
+  createdAt DateTime  @default(now()) @map("created_at")
+  updatedAt DateTime  @updatedAt @map("updated_at")
+
+  data DictData[]
+
+  @@map("dict_types")
+}
+
+// ---------------- 数据字典：字典项表 ----------------
+model DictData {
+  id         Int      @id @default(autoincrement())
+  dictTypeId Int      @map("dict_type_id")
+  label      String                            // 显示文案，如 已发货
+  value      String                             // 存储值，如 2
+  sort       Int      @default(0)
+  status     Int      @default(1)
+  createdAt  DateTime @default(now()) @map("created_at")
+
+  dictType DictType @relation(fields: [dictTypeId], references: [id], onDelete: Cascade)
+
+  @@unique([dictTypeId, value])
+  @@index([dictTypeId])
+  @@map("dict_data")
+}
+
+// ---------------- 邮件服务：发送日志表 ----------------
+// 只记录元数据与结果，不记录正文、验证码和授权码。
+// test_id 仅测试邮件使用，用于关联 SMTP 发送与 IMAP 回读结果。
+model MailLog {
+  id         Int       @id @default(autoincrement())
+  userId     Int?      @map("user_id")
+  toEmail    String    @map("to_email")
+  subject    String
+  template   String    @default("mail_test")
+  status     String    @default("pending")
+  testId     String?   @map("test_id")
+  messageId  String?   @map("message_id")
+  error      String?
+  createdAt  DateTime  @default(now()) @map("created_at")
+  sentAt     DateTime? @map("sent_at")
+  receivedAt DateTime? @map("received_at")
+
+  @@index([template, id])
+  @@index([testId])
+  @@map("mail_logs")
+}
+
+// ---------------- 限流计数（多实例共享） ----------------
+// express-rate-limit 自定义 store 使用主库持久化计数，
+// 多实例部署时同一窗口共享命中次数，不再依赖单进程内存。
+model RateLimitHit {
+  key       String   @id @map("rate_key")
+  totalHits Int      @default(0) @map("total_hits")
+  resetAt   DateTime @map("reset_at")
+  updatedAt DateTime @default(now()) @updatedAt @map("updated_at")
+
+  @@index([resetAt])
+  @@map("rate_limit_hits")
+}
+
+// ---------------- 忘记密码验证码 ----------------
+model PasswordResetCode {
+  id        Int       @id @default(autoincrement())
+  userId    Int       @map("user_id")
+  email     String
+  codeHash  String    @map("code_hash")
+  attempts  Int       @default(0)
+  expiresAt DateTime  @map("expires_at")
+  usedAt    DateTime? @map("used_at")
+  createdAt DateTime  @default(now()) @map("created_at")
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@index([userId, usedAt])
+  @@index([email])
+  @@map("password_reset_codes")
+}

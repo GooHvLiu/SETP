@@ -1,0 +1,152 @@
+[
+  {
+    "method": "get",
+    "path": "/",
+    "source": "routes/healthRouter.ts",
+    "auth": false
+  },
+  {
+    "method": "post",
+    "path": "/api/v1/auth/password/forgot",
+    "source": "src/modules/auth/auth.recovery.route.ts",
+    "auth": false
+  },
+  {
+    "method": "post",
+    "path": "/api/v1/auth/password/reset",
+    "source": "src/modules/auth/auth.recovery.route.ts",
+    "auth": false
+  },
+  {
+    "method": "post",
+    "path": "/api/v1/help/admin/assets",
+    "source": "src/modules/help/help.admin.route.ts",
+    "auth": true
+  },
+  {
+    "method": "get",
+    "path": "/api/v1/help/admin/index/status",
+    "source": "src/modules/help/help.admin.route.ts",
+    "auth": true
+  },
+  {
+    "method": "get",
+    "path": "/api/v1/help/admin/locales",
+    "source": "src/modules/help/help.admin.route.ts",
+    "auth": true
+  },
+  {
+    "method": "delete",
+    "path": "/api/v1/help/admin/locales/:locale",
+    "source": "src/modules/help/help.admin.route.ts",
+    "auth": true
+  },
+  {
+    "method": "patch",
+    "path": "/api/v1/help/admin/locales/:locale",
+    "source": "src/modules/help/help.admin.route.ts",
+    "auth": true
+  },
+  {
+    "method": "post",
+    "path": "/api/v1/help/admin/locales/:locale/init",
+    "source": "src/modules/help/help.admin.route.ts",
+    "auth": true
+  },
+  {
+    "method": "get",
+    "path": "/api/v1/help/admin/slots",
+    "source": "src/modules/help/help.admin.route.ts",
+    "auth": true
+  },
+  {
+    "method": "post",
+    "path": "/api/v1/help/admin/slots",
+    "source": "src/modules/help/help.admin.route.ts",
+    "auth": true
+  },
+  {
+    "method": "delete",
+    "path": "/api/v1/help/admin/slots/:docKey",
+    "source": "src/modules/help/help.admin.route.ts",
+    "auth": true
+  },
+  {
+    "method": "get",
+    "path": "/api/v1/help/admin/slots/:docKey",
+    "source": "src/modules/help/help.admin.route.ts",
+    "auth": true
+  },
+  {
+    "method": "put",
+    "path": "/api/v1/help/admin/slots/:docKey",
+    "source": "src/modules/help/help.admin.route.ts",
+    "auth": true
+  },
+  {
+    "method": "delete",
+    "path": "/api/v1/help/admin/slots/:docKey/content",
+    "source": "src/modules/help/help.admin.route.ts",
+    "auth": true
+  },
+  {
+    "method": "get",
+    "path": "/api/v1/help/admin/slots/:docKey/content",
+    "source": "src/modules/help/help.admin.route.ts",
+    "auth": true
+  },
+  {
+    "method": "put",
+    "path": "/api/v1/help/admin/slots/:docKey/content",
+    "source": "src/modules/help/help.admin.route.ts",
+    "auth": true
+  },
+  {
+    "method": "get",
+    "path": "/api/v1/help/admin/slots/:docKey/file",
+    "source": "src/modules/help/help.admin.route.ts",
+    "auth": true
+  },
+  {
+    "method": "get",
+    "path": "/api/v1/help/admin/slots/file-options",
+    "source": "src/modules/help/help.admin.route.ts",
+    "auth": true
+  },
+  {
+    "method": "post",
+    "path": "/api/v1/super-admin/settings/batch",
+    "source": "src/modules/config/superSettings.batch.route.ts",
+    "auth": true
+  },
+  {
+    "method": "get",
+    "path": "/api/v1/super-admin/settings/mail/logs",
+    "source": "src/modules/mail/mail.route.ts",
+    "auth": true
+  },
+  {
+    "method": "get",
+    "path": "/api/v1/super-admin/settings/mail/status",
+    "source": "src/modules/mail/mail.route.ts",
+    "auth": true
+  },
+  {
+    "method": "post",
+    "path": "/api/v1/super-admin/settings/mail/test",
+    "source": "src/modules/mail/mail.route.ts",
+    "auth": true
+  },
+  {
+    "method": "get",
+    "path": "/live",
+    "source": "routes/healthRouter.ts",
+    "auth": false
+  },
+  {
+    "method": "get",
+    "path": "/ready",
+    "source": "routes/healthRouter.ts",
+    "auth": false
+  }
+]

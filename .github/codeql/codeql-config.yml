@@ -1,0 +1,10 @@
+name: "SETP backend CodeQL config"
+
+paths-ignore:
+  - "**/node_modules/**"
+  - "**/dist/**"
+  - "**/coverage/**"
+  - "**/data/**"
+  - "**/backups/**"
+  - "**/logs/**"
+  - "**/uploads/**"

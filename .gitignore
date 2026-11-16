@@ -1,0 +1,46 @@
+# 依赖
+node_modules/
+
+# 环境变量（含密钥，禁止提交）
+.env
+.env.*
+!.env.example
+
+# 构建产物
+dist/
+
+# 生成物（由 tsoa / prisma 生成，不随源码提交）
+src/routes/routes.ts
+src/swagger/swagger.json
+prisma/schema.mysql.prisma
+
+# 契约快照（openapi/manual 由 check 校验，必须提交；error-codes 仅导出产物，按需生成）
+!docs/api/
+docs/api/error-codes.json
+
+# 运行时数据（保留目录占位，忽略库文件）
+data/*
+!data/.gitkeep
+
+# 数据库文件（sqlite 无密码，禁止入库）
+*.db
+uploads/
+logs/
+backups/
+
+# 测试
+coverage/
+
+# 本地调试残留
+.tmp*
+*.log
+server.log
+server.pid
+
+# IDE
+.vscode/
+.idea/
+
+# 系统
+.DS_Store
+Thumbs.db
