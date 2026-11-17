@@ -1,6 +1,7 @@
 # SETP 后端模板
 
 > Express + TypeScript + Prisma + TSOA 后端框架模板，开箱即用的完整工程化模板。
+
 文档：[贡献指南](CONTRIBUTING.md) · [安全策略](SECURITY.md) · [变更记录](CHANGELOG.md) · [接口契约](#接口契约)
 
 [![CI](https://github.com/GooHvLiu/Setp/actions/workflows/ci.yml/badge.svg?branch=main)](https://github.com/GooHvLiu/Setp/actions/workflows/ci.yml)
@@ -9,11 +10,12 @@
 
 ## 快速开始
 
-\> 环境要求：Node.js >= 20.19.0；SQLite 方式无需额外数据库，MySQL 方式需要 MySQL 8.0+ 或 MariaDB 10.6+。 
+> 环境要求：Node.js >= 20.19.0；SQLite 方式无需额外数据库，MySQL 方式需要 MySQL 8.0+ 或 MariaDB 10.6+。 
 
 **方式一：SQLite 零配置（推荐首次体验）**
 
- 适合第一次运行、只想先看接口和后台能力的情况，不需要安装 MySQL。 
+适合第一次运行、只想先看接口和后台能力的情况，不需要安装 MySQL。
+
 
 ```bash
 npm ci
@@ -82,7 +84,6 @@ SETP 后端匹配 V3TM 前端，数据库内字段采用国际化配置字段，
 | `npm run gen:module -- <name>` | 生成 controller/service/model/schema + service 单测骨架 |
 
 完整命令见上表；接口契约见下方“接口契约”；贡献流程与安全策略见 [`CONTRIBUTING.md`](CONTRIBUTING.md) 与 [`SECURITY.md`](SECURITY.md)。历史技术笔记见 [`docs/reference/technical-spec.md`](docs/reference/technical-spec.md)（仅历史参考，不再维护正文）。
-
 
 ## 新增与增强能力（0.5.0）
 
