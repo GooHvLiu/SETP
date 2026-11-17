@@ -4599,7 +4599,7 @@
   },
   "info": {
     "title": "setp-backend",
-    "version": "0.5.0",
+    "version": "0.8.0",
     "description": "Setp - Express + TypeScript + Prisma backend template",
     "license": {
       "name": "MIT"
