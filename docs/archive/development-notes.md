@@ -2,32 +2,34 @@
 
 > Express + TypeScript + Prisma + TSOA 后端框架模板，开箱即用的完整工程化模板。
 
+> 状态：历史资料，不再维护。当前行为以 [`README.md`](../../README.md)、代码和 [`docs/api`](../api) 为准。
+
 ## 技术规格
 
 ### 技术选用
 
-| 分类      | 技术                            | 说明                                                         |
-| --------- | ------------------------------- | ------------------------------------------------------------ |
-| 核心框架  | `Express 4`                     | Node.js Web 框架，中间件模型，MVC 分层                       |
-| 开发语言  | `TypeScript`                    | 全量 TS，`tsc` 类型检查，`tsx` 直接运行 + `nodemon` 热重载   |
-| 路由/文档 | `TSOA`                          | 装饰器即路由 + 自动生成 OpenAPI 3.0 文档                     |
+| 分类      | 技术                            | 说明                                                                          |
+| --------- | ------------------------------- | ----------------------------------------------------------------------------- |
+| 核心框架  | `Express 4`                     | Node.js Web 框架，中间件模型，MVC 分层                                        |
+| 开发语言  | `TypeScript`                    | 全量 TS，`tsc` 类型检查，`tsx` 直接运行 + `nodemon` 热重载                    |
+| 路由/文档 | `TSOA`                          | 装饰器即路由 + 自动生成 OpenAPI 3.0 文档                                      |
 | 数据库    | `Prisma`                        | schema 单文件定义模型 + migrate 迁移 + 强类型 Client；mysql / sqlite 二态切换 |
-| 参数校验  | `Joi`                           | controller 层 schema 校验，非法参数直接拦截                  |
-| 认证鉴权  | `JWT 双令牌` + `bcryptjs`       | Access(15m) + Refresh(7d)，刷新/登出吊销；验证码登录         |
-| 权限系统  | `RBAC`                          | 用户-角色-菜单/权限点-按钮 五表模型，权限码中间件            |
-| 日志      | `Pino`                          | 结构化 JSON 日志 + 请求 ID，开发环境 pino-pretty 美化        |
-| 配置      | `dotenv` + `zod`                | 启动即校验环境变量，强类型导出，拼错变量 fail-fast           |
-| 安全      | `helmet` + `express-rate-limit` | 安全响应头；全局 + 登录接口分级限流；账号失败锁定；CORS 白名单 |
-| 数据字典  | 自研模块                        | dict_type + dict_data 表 + 内存缓存 + 查询/维护接口          |
-| 菜单角色  | `Menu`+`role`+`user`            | 创建默认菜单，并具备权鉴功能支持                             |
-| API 版本  | `/api/v1`                       | 统一版本前缀，预留 v2 演进                                   |
+| 参数校验  | `Joi`                           | controller 层 schema 校验，非法参数直接拦截                                   |
+| 认证鉴权  | `JWT 双令牌` + `bcryptjs`       | Access(15m) + Refresh(7d)，刷新/登出吊销；验证码登录                          |
+| 权限系统  | `RBAC`                          | 用户-角色-菜单/权限点-按钮 五表模型，权限码中间件                             |
+| 日志      | `Pino`                          | 结构化 JSON 日志 + 请求 ID，开发环境 pino-pretty 美化                         |
+| 配置      | `dotenv` + `zod`                | 启动即校验环境变量，强类型导出，拼错变量 fail-fast                            |
+| 安全      | `helmet` + `express-rate-limit` | 安全响应头；全局 + 登录接口分级限流；账号失败锁定；CORS 白名单                |
+| 数据字典  | 自研模块                        | dict_type + dict_data 表 + 内存缓存 + 查询/维护接口                           |
+| 菜单角色  | `Menu`+`role`+`user`            | 创建默认菜单，并具备权鉴功能支持                                              |
+| API 版本  | `/api/v1`                       | 统一版本前缀，预留 v2 演进                                                    |
 
 - **目录别名**：`@routes` → `routes`、`@src` → `src`（见 `package.json` 的 `_moduleAliases`）
 - **路由加载**：`/api/v1` 开头请求由 `tsoa` 编译时自动生成路由，`controller`类+装饰器风格，新增模块只需写 `controller`
 - **环境变量**：`.env` 区分应用、数据库、JWT、上传配置，按 `.env.example` 复制，分工如下：
 
-| 文件           | 作用                                                 | 是否提交 git             | 谁用                                       |
-| -------------- | ---------------------------------------------------- | ------------------------ | ------------------------------------------ |
+| 文件           | 作用                                                 | 是否提交 git              | 谁用                                       |
+| -------------- | ---------------------------------------------------- | ------------------------- | ------------------------------------------ |
 | `.env.example` | **模板**，列出所有可用变量和示例值                   | ✅ 提交                   | 新成员 `clone` 后复制改名用                |
 | `.env`         | **实际运行配置**，`npm run init` 自动补齐 `LOCAL_IP` | ❌ 不提交（各人本地不同） | 本地开发 / 部署，填写真实数据库、JWT、端口 |
 
@@ -75,7 +77,7 @@
   APP_HOST=0.0.0.0
   ......
   ```
-  
+
 - API 文档自动关闭：`NODE_ENV=production` 时 `/api-docs` 不再挂载，无需手动处理
 
 #### 运行命令
@@ -144,11 +146,11 @@ DATABASE_URL="mysql://root:password@127.0.0.1:3306/db_name"
 
 使用`prisma`提供五张标准表格：`users`、`roles`、`menus`、`user_roles`、`role_menus`。
 
-- `menus` 三级结构：`DIR`（目录）→` MENU `（菜单）→` BUTTON `（按钮），`permission` 字段存权限码
+- `menus` 三级结构：`DIR`（目录）→`MENU`（菜单）→`BUTTON`（按钮），`permission` 字段存权限码
 - `menus.menu_group` 字段（DB 列名 `menu_group`）：菜单分组标识，**DIR / MENU 顶层可填组名**（`""`=未分组）；前端获取 `menus` 后按 `menu_group` 分组渲染，**menu_group 为空的菜单不参与分组渲染，子级统一 `""`**；后端不校验 menu_group 取值，由配置人员按前端分组约定填写（BUTTON 权限点无需分组）
 - `menu_group` 约定四组，前端侧边栏按此顺序渲染：`menu.group.General`（首页 / 数据检索）→ `menu.group.Tasks`（设计任务 / 项目管理）→ `menu.group.Settings`（系统设置 / 管理中心 / 关于）→ `menu.group.superAdmin`（超级面板：超级设置 `/super-settings` 与超级管理 `/super-admin`（DIR，下辖健康检查 / 会话中心 / 运行面板 / 运维任务 / 字典中心 / 角色中心 / 菜单中心 / 知识运维 / 权限中心九项），仅 superAdmin 角色绑定）；新增顶层 DIR/MENU 归入 `menu.group.superAdmin` 即自动排在 Settings 之后
 - 权限码格式：`模块:资源:操作`，如 `adminCenter:user:list`、`adminCenter:user:create`
-- ` Controller  `中声明所需权限：
+- `Controller `中声明所需权限：
 
 ```typescript
 @Security("bearerAuth")                    // 只要登录
@@ -160,25 +162,26 @@ DATABASE_URL="mysql://root:password@127.0.0.1:3306/db_name"
 
 **菜单 / 角色管理接口（RBAC 配置闭环）**
 
-| 接口 | 说明 | 权限码 |
-| --- | --- | --- |
-| `GET /api/v1/menu/tree` | 当前用户可见菜单树（前端动态路由数据源） | 仅登录 |
-| `GET /api/v1/menu/list` | 管理端全量菜单树（含按钮） | `superAdmin:menu:list` |
-| `POST /api/v1/menu` | 新增菜单 / 权限点 | `superAdmin:menu:create` |
-| `PUT /api/v1/menu/{id}` | 更新菜单 | `superAdmin:menu:update` |
-| `DELETE /api/v1/menu/{id}` | 删除菜单（有子菜单拒绝，同步清理角色关联） | `superAdmin:menu:delete` |
-| `GET /api/v1/menu/deleted` | 已删除菜单清单（回收站，扁平结构，含 parentName / deletedAt） | `superAdmin:menu:list` |
-| `POST /api/v1/menu/{id}/restore` | 恢复已删除菜单（不恢复角色绑定） | `superAdmin:menu:restore` |
-| `GET /api/v1/role/list` · `GET /api/v1/role/{id}` | 角色列表 / 详情（含绑定菜单） | `superAdmin:role:list` |
-| `POST /api/v1/role` | 新增角色（可同时绑定菜单） | `superAdmin:role:create` |
-| `PUT /api/v1/role/{id}` | 更新角色（menuIds 传入即整体重建绑定） | `superAdmin:role:update` |
-| `DELETE /api/v1/role/{id}` | 删除角色（被用户引用时拒绝；内置角色 admin/operator/viewer 禁止删除/停用） | `superAdmin:role:delete` |
-| `PUT /api/v1/role/{id}/menus` | 单独重建角色-菜单绑定 | `superAdmin:role:assign` |
-| `PUT /api/v1/role/{id}/permissions` | 按权限码整体重建角色-菜单绑定 | `superAdmin:role:assign` |
+| 接口                                              | 说明                                                                       | 权限码                    |
+| ------------------------------------------------- | -------------------------------------------------------------------------- | ------------------------- |
+| `GET /api/v1/menu/tree`                           | 当前用户可见菜单树（前端动态路由数据源）                                   | 仅登录                    |
+| `GET /api/v1/menu/list`                           | 管理端全量菜单树（含按钮）                                                 | `superAdmin:menu:list`    |
+| `POST /api/v1/menu`                               | 新增菜单 / 权限点                                                          | `superAdmin:menu:create`  |
+| `PUT /api/v1/menu/{id}`                           | 更新菜单                                                                   | `superAdmin:menu:update`  |
+| `DELETE /api/v1/menu/{id}`                        | 删除菜单（有子菜单拒绝，同步清理角色关联）                                 | `superAdmin:menu:delete`  |
+| `GET /api/v1/menu/deleted`                        | 已删除菜单清单（回收站，扁平结构，含 parentName / deletedAt）              | `superAdmin:menu:list`    |
+| `POST /api/v1/menu/{id}/restore`                  | 恢复已删除菜单（不恢复角色绑定）                                           | `superAdmin:menu:restore` |
+| `GET /api/v1/role/list` · `GET /api/v1/role/{id}` | 角色列表 / 详情（含绑定菜单）                                              | `superAdmin:role:list`    |
+| `POST /api/v1/role`                               | 新增角色（可同时绑定菜单）                                                 | `superAdmin:role:create`  |
+| `PUT /api/v1/role/{id}`                           | 更新角色（menuIds 传入即整体重建绑定）                                     | `superAdmin:role:update`  |
+| `DELETE /api/v1/role/{id}`                        | 删除角色（被用户引用时拒绝；内置角色 admin/operator/viewer 禁止删除/停用） | `superAdmin:role:delete`  |
+| `PUT /api/v1/role/{id}/menus`                     | 单独重建角色-菜单绑定                                                      | `superAdmin:role:assign`  |
+| `PUT /api/v1/role/{id}/permissions`               | 按权限码整体重建角色-菜单绑定                                              | `superAdmin:role:assign`  |
 
 内置角色 `admin` / `operator` / `viewer` 仅禁止删除和停用；菜单绑定与权限点可由超级管理员通过 `PUT /role/{id}/menus` 或 `PUT /role/{id}/permissions` 重新分配。
 
 用户-角色分配：`POST/PUT /api/v1/user` 传 `roleCodes` 数组即可（user 模块内置支持）。
+
 - 用户列表 `GET /api/v1/user/list` 支持 `username` / `realName` 双字段模糊搜索（`?username=xxx&realName=yyy`）
 - 更新用户 `PUT /api/v1/user/{id}` 支持修改 `username`（变更时自动查重，重复返回 `USER_ALREADY_EXIST`）
 - 批量删除 `POST /api/v1/user/batch-delete`（body `{ "ids": number[] }`，1~100 个，软删除 + 清理角色绑定，需 `adminCenter:user:delete`；任一 id 不存在整体返回 `USER_NOT_EXIST`，成功返回 `data.deleted`）
@@ -203,18 +206,17 @@ DATABASE_URL="mysql://root:password@127.0.0.1:3306/db_name"
 - `path` 全局唯一：非空 `path` 在未删除菜单中唯一（外链地址同样参与查重），重复返回 `40009`；删除后 `path` 释放，恢复时若已被新菜单占用同样返回 `40009`。
 - 删除与恢复：删除为软删并清理 `role_menus`；`GET /api/v1/menu/deleted` 查看回收站，恢复只恢复节点本身、不恢复角色绑定；父节点仍在回收站返回 `40010`，重复恢复返回 `40011`。`superAdmin:menu:restore` 由 seed 的隐藏权限点 `mockId 2030` 提供。
 
-
 ### 系统参数双域接口
 
 配置按 `configScope` 分为 `system`（5 项）与 `super`（41 项），一个键只属于一个域，不做同键双写；取值优先级为数据库值 > 环境变量兜底 > 代码默认值。注册表 `src/config/config.registry.ts` 是键、域、分组、类型、默认值、校验和 env 兜底的唯一权威来源，运行时缓存由 `src/config/runtimeConfig.ts` 维护，写入后即时生效。
 
-| 模块 | 方法与路径 | 权限码 | 说明 |
-| --- | --- | --- | --- |
-| 系统设置 | `GET /api/v1/config/all` | 登录即可 | 只返回 `readScope=all` 的 15 项，按 `sort,id` 升序；其中 super 域的站点/法务/上传/版本 10 项 `editable` 固定为 `0` |
-| 系统设置 | `GET /api/v1/config/public` | 无需登录 | 匿名只读子集，固定 11 项：站点 4（含 `appVersion`）、法务/联系 5、`default_locale`、`register_enabled`；不含超时、帮助、AI、邮件等内部参数 |
-| 系统设置 | `PUT /api/v1/config` | `systemSettings:config:update` | body `{ key, value }`，只写 system 域 5 项；`default_locale` / `request_timeout` / `help_mode` / `help_answer_policy` / `register_enabled` |
-| 超级设置 | `GET /api/v1/super-admin/settings` | `superAdmin:settings:list` | 返回 super 域 41 项（其中 mail 组 15 项、log 组 1 项），字段与 `GET /config/all` 一致 |
-| 超级设置 | `PUT /api/v1/super-admin/settings` | `superAdmin:settings:update` | body `{ key, value }`，只写 super 域 41 项 |
+| 模块     | 方法与路径                         | 权限码                         | 说明                                                                                                                                       |
+| -------- | ---------------------------------- | ------------------------------ | ------------------------------------------------------------------------------------------------------------------------------------------ |
+| 系统设置 | `GET /api/v1/config/all`           | 登录即可                       | 只返回 `readScope=all` 的 15 项，按 `sort,id` 升序；其中 super 域的站点/法务/上传/版本 10 项 `editable` 固定为 `0`                         |
+| 系统设置 | `GET /api/v1/config/public`        | 无需登录                       | 匿名只读子集，固定 11 项：站点 4（含 `appVersion`）、法务/联系 5、`default_locale`、`register_enabled`；不含超时、帮助、AI、邮件等内部参数 |
+| 系统设置 | `PUT /api/v1/config`               | `systemSettings:config:update` | body `{ key, value }`，只写 system 域 5 项；`default_locale` / `request_timeout` / `help_mode` / `help_answer_policy` / `register_enabled` |
+| 超级设置 | `GET /api/v1/super-admin/settings` | `superAdmin:settings:list`     | 返回 super 域 41 项（其中 mail 组 15 项、log 组 1 项），字段与 `GET /config/all` 一致                                                      |
+| 超级设置 | `PUT /api/v1/super-admin/settings` | `superAdmin:settings:update`   | body `{ key, value }`，只写 super 域 41 项                                                                                                 |
 
 口径说明：
 
@@ -236,12 +238,12 @@ DATABASE_URL="mysql://root:password@127.0.0.1:3306/db_name"
 
 mail 参数归超级设置，`configGroup=mail`、`configScope=super`、`readScope=super`，共 15 项（sort 140–154）。首次 seed 从 `.env` 的 `MAIL_INIT_USER` / `MAIL_INIT_PASS` / `MAIL_INIT_FROM` 写入真实账号与授权码，`.env.example` 只写占位；seed 幂等，不覆盖页面已保存值。
 
-| 方法与路径 | 权限码 | 说明 |
-| --- | --- | --- |
-| `POST /api/v1/super-admin/settings/batch` | `superAdmin:settings:update` | body `{ items: [{ key, value }] }`，1–50 项，单事务；任一项非法则整体失败 |
-| `GET /api/v1/super-admin/settings/mail/status` | `superAdmin:settings:list` | 返回 `enabled / configured / passSet / smtp / imap / lastTest / lastBusiness` |
-| `GET /api/v1/super-admin/settings/mail/logs` | `superAdmin:settings:list` | query `limit`（1–100，默认 20）/ `template`（`mail_test` 或 `verification_code`）；按 id 倒序返回测试与业务发信记录 |
-| `POST /api/v1/super-admin/settings/mail/test` | `superAdmin:settings:update` | body `{ mode?: "full" \| "send" \| "verify", to?: string }`，默认 `full`；`to` 不传时发给发件邮箱自己，传外部收件人时跳过 IMAP 回读 |
+| 方法与路径                                     | 权限码                       | 说明                                                                                                                                |
+| ---------------------------------------------- | ---------------------------- | ----------------------------------------------------------------------------------------------------------------------------------- |
+| `POST /api/v1/super-admin/settings/batch`      | `superAdmin:settings:update` | body `{ items: [{ key, value }] }`，1–50 项，单事务；任一项非法则整体失败                                                           |
+| `GET /api/v1/super-admin/settings/mail/status` | `superAdmin:settings:list`   | 返回 `enabled / configured / passSet / smtp / imap / lastTest / lastBusiness`                                                       |
+| `GET /api/v1/super-admin/settings/mail/logs`   | `superAdmin:settings:list`   | query `limit`（1–100，默认 20）/ `template`（`mail_test` 或 `verification_code`）；按 id 倒序返回测试与业务发信记录                 |
+| `POST /api/v1/super-admin/settings/mail/test`  | `superAdmin:settings:update` | body `{ mode?: "full" \| "send" \| "verify", to?: string }`，默认 `full`；`to` 不传时发给发件邮箱自己，传外部收件人时跳过 IMAP 回读 |
 
 口径说明：
 
@@ -270,16 +272,16 @@ mail 参数归超级设置，`configGroup=mail`、`configScope=super`、`readSco
 - 管理员手动发送不允许定向 `superAdmin`；受众解析后为空返回 `91002`。
 - 不做撤回；删除 `POST /api/v1/notification/create`，站内通知统一走服务层门面。
 
-| 方法与路径 | 权限码 | 说明 |
-| --- | --- | --- |
-| `GET /api/v1/notification/list` | 登录即可 | query `page` / `pageSize` / `category` / `type` / `isRead` |
-| `GET /api/v1/notification/unread-count` | 登录即可 | 返回 `{ count }` |
-| `POST /api/v1/notification/read/{id}` | 登录即可 | 标记单条已读，补 `readAt` |
-| `POST /api/v1/notification/read-all` | 登录即可 | 全部已读，补 `readAt` |
-| `GET /api/v1/notification/admin/batches` | `adminCenter:notice:manage` | query `page` / `pageSize` / `category` / `type` / `source` / `keyword`；按 `batchId` 聚合 |
-| `GET /api/v1/notification/admin/batches/{batchId}` | `adminCenter:notice:manage` | 批次详情，含收件人、已读与邮件状态 |
-| `POST /api/v1/notification/admin/send` | `adminCenter:notice:send` | body `{ title, content, category, type, audience: { type: "all" \| "role" \| "user", roleCodes?, userIds? }, link?, sendEmail }` |
-| `POST /api/v1/notification/admin/batches/{batchId}/retry-email` | `adminCenter:notice:manage` | 仅重试该批次 `emailStatus=failed` 的收件人 |
+| 方法与路径                                                      | 权限码                      | 说明                                                                                                                             |
+| --------------------------------------------------------------- | --------------------------- | -------------------------------------------------------------------------------------------------------------------------------- |
+| `GET /api/v1/notification/list`                                 | 登录即可                    | query `page` / `pageSize` / `category` / `type` / `isRead`                                                                       |
+| `GET /api/v1/notification/unread-count`                         | 登录即可                    | 返回 `{ count }`                                                                                                                 |
+| `POST /api/v1/notification/read/{id}`                           | 登录即可                    | 标记单条已读，补 `readAt`                                                                                                        |
+| `POST /api/v1/notification/read-all`                            | 登录即可                    | 全部已读，补 `readAt`                                                                                                            |
+| `GET /api/v1/notification/admin/batches`                        | `adminCenter:notice:manage` | query `page` / `pageSize` / `category` / `type` / `source` / `keyword`；按 `batchId` 聚合                                        |
+| `GET /api/v1/notification/admin/batches/{batchId}`              | `adminCenter:notice:manage` | 批次详情，含收件人、已读与邮件状态                                                                                               |
+| `POST /api/v1/notification/admin/send`                          | `adminCenter:notice:send`   | body `{ title, content, category, type, audience: { type: "all" \| "role" \| "user", roleCodes?, userIds? }, link?, sendEmail }` |
+| `POST /api/v1/notification/admin/batches/{batchId}/retry-email` | `adminCenter:notice:manage` | 仅重试该批次 `emailStatus=failed` 的收件人                                                                                       |
 
 通知邮件的模板名为 `notify_system` / `notify_security` / `notify_business` / `notify_announcement`，按分类自动选择；配置表没有 `site_url`，因此只有 `link` 为 `http(s)` 时才在邮件里渲染「去处理」按钮。
 
@@ -298,12 +300,12 @@ mail 参数归超级设置，`configGroup=mail`、`configScope=super`、`readSco
 - 操作日志中间件覆盖 `POST / PUT / PATCH / DELETE`，成功和失败都记录：包装 `res.json` 读取业务码判定 `success / failed / blocked`；`action` 对 APPROVE / REJECT / REVOKE / CLEANUP / REINDEX / TEST 特判；`target` 取路径末段；不解析请求体；跳过 `/auth/login`、`/auth/logout`、`/auth/refresh`、`/notification/read*`。
 - 登录流水写在 auth controller：成功与失败都落 `LOGIN`，登出落 `LOGOUT`；失败时 `userId=null`，`reason` 用现成错误码。
 
-| 方法与路径 | 权限码 | 说明 |
-| --- | --- | --- |
-| `GET /api/v1/log-center/list` | `adminCenter:log:list` | query `page` / `pageSize` / `category`（`operation` \| `login` \| `mail`）/ `module` / `action` / `result` / `username` / `keyword` / `from` / `to` |
-| `GET /api/v1/log-center/summary` | `adminCenter:log:list` | query `range`（`24h` \| `7d` \| `30d`），返回三类日志数量与结果分布 |
-| `POST /api/v1/log-center/cleanup` | `adminCenter:log:cleanup` | body `{ beforeDays?, confirm: "CLEANUP" }`；缺 `confirm` 返回 `92001`，不传 `beforeDays` 时读 `log_retention_days`（默认 90） |
-| `GET /api/v1/operate-log/list` | `adminCenter:log:list` | 兼容别名，固定 `category=operation`，新增 `keyword` |
+| 方法与路径                        | 权限码                    | 说明                                                                                                                                                |
+| --------------------------------- | ------------------------- | --------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `GET /api/v1/log-center/list`     | `adminCenter:log:list`    | query `page` / `pageSize` / `category`（`operation` \| `login` \| `mail`）/ `module` / `action` / `result` / `username` / `keyword` / `from` / `to` |
+| `GET /api/v1/log-center/summary`  | `adminCenter:log:list`    | query `range`（`24h` \| `7d` \| `30d`），返回三类日志数量与结果分布                                                                                 |
+| `POST /api/v1/log-center/cleanup` | `adminCenter:log:cleanup` | body `{ beforeDays?, confirm: "CLEANUP" }`；缺 `confirm` 返回 `92001`，不传 `beforeDays` 时读 `log_retention_days`（默认 90）                       |
+| `GET /api/v1/operate-log/list`    | `adminCenter:log:list`    | 兼容别名，固定 `category=operation`，新增 `keyword`                                                                                                 |
 
 - 非超管查询会强制过滤 `superAdmin` 记录：operation / login 按 `username`，mail 按 `user_id` 反查排除。
 - 权限范围：`superAdmin` / `admin` 可见三类日志；`operator` / `viewer` 不可见。
@@ -327,10 +329,10 @@ mail 参数归超级设置，`configGroup=mail`、`configScope=super`、`readSco
 
 忘记密码走邮箱验证码流程，两个接口都不需要登录态；登录页与忘记密码页均可直接调用。
 
-| 方法与路径 | 说明 |
-| --- | --- |
+| 方法与路径                          | 说明                                                                                    |
+| ----------------------------------- | --------------------------------------------------------------------------------------- |
 | `POST /api/v1/auth/password/forgot` | body `{ username, email, captchaId, captchaCode }`，校验图形验证码后发送 6 位邮箱验证码 |
-| `POST /api/v1/auth/password/reset` | body `{ username, email, code, newPassword }`，校验邮箱验证码后重置密码 |
+| `POST /api/v1/auth/password/reset`  | body `{ username, email, code, newPassword }`，校验邮箱验证码后重置密码                 |
 
 口径说明：
 
@@ -372,45 +374,45 @@ mail 参数归超级设置，`configGroup=mail`、`configScope=super`、`readSco
 
 四组运维能力挂在超级管理员权限下：列表接口用页面权限码（进入页面即可查看），写操作走按钮权限码（按钮本身 `visible=0`，仅提供接口鉴权）。
 
-| 模块     | 方法与路径                                          | 权限码                                             | 说明                                                                                       |
-| ----- | ----------------------------------------------- | ----------------------------------------------- | ---------------------------------------------------------------------------------------- |
-| 健康检查 | `GET /api/v1/super-admin/health/checks`         | `superAdmin:healthCheck:list`                   | 六项探测 database / memory / disk / logger / helpIndex / aiDependency，query `keys` 逗号分隔（不传跑全部） |
-| 健康检查 | `POST /api/v1/super-admin/health/probe`         | `superAdmin:health:probe`                       | 立即探测，body `{ keys?: string[] }`                                                          |
-| 会话中心 | `GET /api/v1/super-admin/sessions`              | `superAdmin:sessionCenter:list`                 | query `page` / `pageSize` / `status`（active \| expired \| revoked）/ `keyword`；summary 恒按全量统计 |
-| 会话中心 | `POST /api/v1/super-admin/sessions/:id/revoke`  | `superAdmin:session:revoke`                     | body `{ force?: boolean }`；吊销后该会话的 access token 立即失效（单端下线），`force=true` 时同时提升该用户 token_version，使其全端立即下线                            |
-| 会话中心 | `POST /api/v1/super-admin/sessions/revoke-batch` | `superAdmin:session:revoke`                     | body `{ ids: number[], force?: boolean }`                                                   |
-| 会话中心 | `POST /api/v1/super-admin/sessions/cleanup`     | `superAdmin:session:cleanup`                    | body `{ beforeDays?: number }`（1–365，不传时读 `session_cleanup_keep_days`，默认 7），删除已过期或已吊销且早于阈值的记录                                    |
-| 运行指标 | `GET /api/v1/super-admin/metrics/overview`      | `superAdmin:metricsCenter:list`                 | query `range`（1h \| 6h \| 24h）；返回 totals / current / series                                 |
-| 运行指标 | `POST /api/v1/super-admin/metrics/reset`        | `superAdmin:metrics:reset`                      | 清空内存分桶，返回影响面                                                                             |
-| 运维任务 | `GET /api/v1/super-admin/ops/tasks`             | `superAdmin:taskCenter:list`                    | 四项任务：session-cleanup / help-reindex / db-backup / db-reseed                                  |
-| 运维任务 | `POST /api/v1/super-admin/ops/tasks/:key/run`   | `superAdmin:task:run`                           | 执行非危险任务，危险任务调用返回 `60008`                                                                  |
-| 运维任务 | `POST /api/v1/super-admin/ops/reseed`           | `superAdmin:task:run` + `superAdmin:task:danger` | body `{ confirm: "RESEED" }`                                                              |
-| 知识库 | `GET /api/v1/help/admin/locales` | `superAdmin:knowledgeCenter:list` | 语言目录 + manifest 有效性 + 文档/索引统计 |
-| 知识库 | `POST /api/v1/help/admin/locales/:locale/init` | `superAdmin:help:slot:manage` | 建语言目录 + 空 `help.manifest.json`，已存在则返回 `created=false` |
-| 知识库 | `PATCH /api/v1/help/admin/locales/:locale` | `superAdmin:help:slot:manage` | 改展示名；body 传 `newLocale` 时改目录名并平移该语言索引 |
-| 知识库 | `DELETE /api/v1/help/admin/locales/:locale` | `superAdmin:help:slot:manage` | 物理删除语言目录与索引，`confirm=locale`，不保留备份 |
-| 知识库 | `GET /api/v1/help/admin/slots` | `superAdmin:knowledgeCenter:list` | 管理树（section/chapter/doc）+ orphan 文件 + 统计，query `locale` |
-| 知识库 | `GET /api/v1/help/admin/slots/file-options` | `superAdmin:help:slot:manage` | 可枚举文件清单（`used` / `docKey`），query `locale` / `keyword` / `contentType` / `page` / `pageSize` |
-| 知识库 | `POST /api/v1/help/admin/slots` | `superAdmin:help:slot:manage` | 新建文档位，只写 manifest |
-| 知识库 | `PUT /api/v1/help/admin/slots/:docKey` | `superAdmin:help:slot:manage` | 改标题/摘要/排序/文章 path |
-| 知识库 | `DELETE /api/v1/help/admin/slots/:docKey` | `superAdmin:help:slot:manage` | 删文档位（manifest + 文件 + 索引），`confirm=docKey` |
-| 知识库 | `GET /api/v1/help/admin/slots/:docKey` | `superAdmin:knowledgeCenter:list` | 文档位详情（含所属 section/chapter） |
-| 知识库 | `GET /api/v1/help/admin/slots/:docKey/content` | `superAdmin:knowledgeCenter:list` | 正文 + `baseHash` 乐观并发基线 |
-| 知识库 | `GET /api/v1/help/admin/slots/:docKey/file` | `superAdmin:knowledgeCenter:list` | 下载/预览原文件（inline） |
-| 知识库 | `PUT /api/v1/help/admin/slots/:docKey/content` | `superAdmin:help:doc:create` 或 `superAdmin:help:doc:update` | `multipart/form-data`，字段 `file`，可选 `baseHash` |
-| 知识库 | `DELETE /api/v1/help/admin/slots/:docKey/content` | `superAdmin:help:doc:delete` | 清空正文（保留槽位），`confirm=docKey` |
-| 知识库 | `POST /api/v1/help/admin/assets` | `superAdmin:help:doc:update` | 图片上传（png/jpg/jpeg/webp/gif，≤5MB） |
-| 知识库 | `POST /api/v1/help/admin/reindex` | `superAdmin:help:reindex` | 幂等全量重建索引，等价 `npm run help:index` |
-| 知识库 | `GET /api/v1/help/admin/index/status` | `superAdmin:knowledgeCenter:list` | 各语言索引状态 + 汇总，query `locale` 可只看单一语言 |
+| 模块     | 方法与路径                                        | 权限码                                                       | 说明                                                                                                                                        |
+| -------- | ------------------------------------------------- | ------------------------------------------------------------ | ------------------------------------------------------------------------------------------------------------------------------------------- |
+| 健康检查 | `GET /api/v1/super-admin/health/checks`           | `superAdmin:healthCheck:list`                                | 六项探测 database / memory / disk / logger / helpIndex / aiDependency，query `keys` 逗号分隔（不传跑全部）                                  |
+| 健康检查 | `POST /api/v1/super-admin/health/probe`           | `superAdmin:health:probe`                                    | 立即探测，body `{ keys?: string[] }`                                                                                                        |
+| 会话中心 | `GET /api/v1/super-admin/sessions`                | `superAdmin:sessionCenter:list`                              | query `page` / `pageSize` / `status`（active \| expired \| revoked）/ `keyword`；summary 恒按全量统计                                       |
+| 会话中心 | `POST /api/v1/super-admin/sessions/:id/revoke`    | `superAdmin:session:revoke`                                  | body `{ force?: boolean }`；吊销后该会话的 access token 立即失效（单端下线），`force=true` 时同时提升该用户 token_version，使其全端立即下线 |
+| 会话中心 | `POST /api/v1/super-admin/sessions/revoke-batch`  | `superAdmin:session:revoke`                                  | body `{ ids: number[], force?: boolean }`                                                                                                   |
+| 会话中心 | `POST /api/v1/super-admin/sessions/cleanup`       | `superAdmin:session:cleanup`                                 | body `{ beforeDays?: number }`（1–365，不传时读 `session_cleanup_keep_days`，默认 7），删除已过期或已吊销且早于阈值的记录                   |
+| 运行指标 | `GET /api/v1/super-admin/metrics/overview`        | `superAdmin:metricsCenter:list`                              | query `range`（1h \| 6h \| 24h）；返回 totals / current / series                                                                            |
+| 运行指标 | `POST /api/v1/super-admin/metrics/reset`          | `superAdmin:metrics:reset`                                   | 清空内存分桶，返回影响面                                                                                                                    |
+| 运维任务 | `GET /api/v1/super-admin/ops/tasks`               | `superAdmin:taskCenter:list`                                 | 四项任务：session-cleanup / help-reindex / db-backup / db-reseed                                                                            |
+| 运维任务 | `POST /api/v1/super-admin/ops/tasks/:key/run`     | `superAdmin:task:run`                                        | 执行非危险任务，危险任务调用返回 `60008`                                                                                                    |
+| 运维任务 | `POST /api/v1/super-admin/ops/reseed`             | `superAdmin:task:run` + `superAdmin:task:danger`             | body `{ confirm: "RESEED" }`                                                                                                                |
+| 知识库   | `GET /api/v1/help/admin/locales`                  | `superAdmin:knowledgeCenter:list`                            | 语言目录 + manifest 有效性 + 文档/索引统计                                                                                                  |
+| 知识库   | `POST /api/v1/help/admin/locales/:locale/init`    | `superAdmin:help:slot:manage`                                | 建语言目录 + 空 `help.manifest.json`，已存在则返回 `created=false`                                                                          |
+| 知识库   | `PATCH /api/v1/help/admin/locales/:locale`        | `superAdmin:help:slot:manage`                                | 改展示名；body 传 `newLocale` 时改目录名并平移该语言索引                                                                                    |
+| 知识库   | `DELETE /api/v1/help/admin/locales/:locale`       | `superAdmin:help:slot:manage`                                | 物理删除语言目录与索引，`confirm=locale`，不保留备份                                                                                        |
+| 知识库   | `GET /api/v1/help/admin/slots`                    | `superAdmin:knowledgeCenter:list`                            | 管理树（section/chapter/doc）+ orphan 文件 + 统计，query `locale`                                                                           |
+| 知识库   | `GET /api/v1/help/admin/slots/file-options`       | `superAdmin:help:slot:manage`                                | 可枚举文件清单（`used` / `docKey`），query `locale` / `keyword` / `contentType` / `page` / `pageSize`                                       |
+| 知识库   | `POST /api/v1/help/admin/slots`                   | `superAdmin:help:slot:manage`                                | 新建文档位，只写 manifest                                                                                                                   |
+| 知识库   | `PUT /api/v1/help/admin/slots/:docKey`            | `superAdmin:help:slot:manage`                                | 改标题/摘要/排序/文章 path                                                                                                                  |
+| 知识库   | `DELETE /api/v1/help/admin/slots/:docKey`         | `superAdmin:help:slot:manage`                                | 删文档位（manifest + 文件 + 索引），`confirm=docKey`                                                                                        |
+| 知识库   | `GET /api/v1/help/admin/slots/:docKey`            | `superAdmin:knowledgeCenter:list`                            | 文档位详情（含所属 section/chapter）                                                                                                        |
+| 知识库   | `GET /api/v1/help/admin/slots/:docKey/content`    | `superAdmin:knowledgeCenter:list`                            | 正文 + `baseHash` 乐观并发基线                                                                                                              |
+| 知识库   | `GET /api/v1/help/admin/slots/:docKey/file`       | `superAdmin:knowledgeCenter:list`                            | 下载/预览原文件（inline）                                                                                                                   |
+| 知识库   | `PUT /api/v1/help/admin/slots/:docKey/content`    | `superAdmin:help:doc:create` 或 `superAdmin:help:doc:update` | `multipart/form-data`，字段 `file`，可选 `baseHash`                                                                                         |
+| 知识库   | `DELETE /api/v1/help/admin/slots/:docKey/content` | `superAdmin:help:doc:delete`                                 | 清空正文（保留槽位），`confirm=docKey`                                                                                                      |
+| 知识库   | `POST /api/v1/help/admin/assets`                  | `superAdmin:help:doc:update`                                 | 图片上传（png/jpg/jpeg/webp/gif，≤5MB）                                                                                                     |
+| 知识库   | `POST /api/v1/help/admin/reindex`                 | `superAdmin:help:reindex`                                    | 幂等全量重建索引，等价 `npm run help:index`                                                                                                 |
+| 知识库   | `GET /api/v1/help/admin/index/status`             | `superAdmin:knowledgeCenter:list`                            | 各语言索引状态 + 汇总，query `locale` 可只看单一语言                                                                                        |
 
 ### 超级面板菜单结构（四模板一致）
 
-| 节点 | 类型 | 路径 | 权限码 | 说明 |
-| --- | --- | --- | --- | --- |
-| 超级设置 | MENU | `/super-settings` | `superAdmin:settings:list` | 独立页面、无子菜单；读取走 `GET /api/v1/super-admin/settings`（super 域 41 项，含 mail 15 项、log 1 项），保存走 `PUT /api/v1/super-admin/settings`（需 `superAdmin:settings:update`） |
-| 超级设置-配置更新 | BUTTON | — | `superAdmin:settings:update` | mockId 2031，挂在超级设置菜单下，`visible=0`，仅提供接口鉴权 |
-| 超级管理 | DIR | `/super-admin` | `superAdmin:center:list` | 目录容器，仅作菜单树标识，无对应后端接口 |
-| 健康检查 / 会话中心 / 运行面板 / 运维任务 / 字典中心 / 角色中心 / 菜单中心 / 知识运维 / 权限中心 | MENU | `/super-admin/*` | 各模块 `superAdmin:<模块>:list` | 超级管理下的二级菜单：`icon` 与 `menu_group` 留空、sort 1–9，path / component / permission 保持原值 |
+| 节点                                                                                             | 类型   | 路径              | 权限码                          | 说明                                                                                                                                                                                   |
+| ------------------------------------------------------------------------------------------------ | ------ | ----------------- | ------------------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| 超级设置                                                                                         | MENU   | `/super-settings` | `superAdmin:settings:list`      | 独立页面、无子菜单；读取走 `GET /api/v1/super-admin/settings`（super 域 41 项，含 mail 15 项、log 1 项），保存走 `PUT /api/v1/super-admin/settings`（需 `superAdmin:settings:update`） |
+| 超级设置-配置更新                                                                                | BUTTON | —                 | `superAdmin:settings:update`    | mockId 2031，挂在超级设置菜单下，`visible=0`，仅提供接口鉴权                                                                                                                           |
+| 超级管理                                                                                         | DIR    | `/super-admin`    | `superAdmin:center:list`        | 目录容器，仅作菜单树标识，无对应后端接口                                                                                                                                               |
+| 健康检查 / 会话中心 / 运行面板 / 运维任务 / 字典中心 / 角色中心 / 菜单中心 / 知识运维 / 权限中心 | MENU   | `/super-admin/*`  | 各模块 `superAdmin:<模块>:list` | 超级管理下的二级菜单：`icon` 与 `menu_group` 留空、sort 1–9，path / component / permission 保持原值                                                                                    |
 
 口径说明：
 
@@ -532,11 +534,9 @@ async function test(name, fn, expectCode, desc = "") {
 
 // ---------- 签名 JWT（绕过验证码，按 userId 签发） ----------
 function signToken(userId, username) {
-  return jwt.sign(
-    { userId, username, type: "access" },
-    process.env.JWT_SECRET || "change-me-in-production-0123456789abcdef",
-    { expiresIn: process.env.JWT_EXPIRES_IN || "15m" }
-  );
+  return jwt.sign({ userId, username, type: "access" }, process.env.JWT_SECRET || "change-me-in-production-0123456789abcdef", {
+    expiresIn: process.env.JWT_EXPIRES_IN || "15m",
+  });
 }
 function adminToken() {
   return signToken(1, "admin");
@@ -573,20 +573,35 @@ async function main() {
 
   // ================= 2. 登录（公开，验证码无法自动识别） =================
   console.log("\n── 2. 登录接口（公开） ──");
-  await test("POST /auth/login 缺字段 → 参数校验错误", async () => {
-    return req("POST", "/auth/login", { body: { username: "admin" } });
-  }, 10003, "TSOA 层 PARAM_INVALID");
-  await test("POST /auth/login 验证码错误", async () => {
-    return req("POST", "/auth/login", {
-      body: { username: "admin", password: "123456", captchaId, captchaCode: "0000" },
-    });
-  }, [10201, 10202], "验证码校验拦截");
-  await test("POST /auth/login 用户不存在", async () => {
-    // 用正确格式验证码 + 不存在的用户，验证业务链路（验证码校验失败则停在 102xx）
-    return req("POST", "/auth/login", {
-      body: { username: "no_such_user_xx", password: "123456", captchaId, captchaCode: "0000" },
-    });
-  }, [10201, 10202, 20001], "验证码或用户链路");
+  await test(
+    "POST /auth/login 缺字段 → 参数校验错误",
+    async () => {
+      return req("POST", "/auth/login", { body: { username: "admin" } });
+    },
+    10003,
+    "TSOA 层 PARAM_INVALID"
+  );
+  await test(
+    "POST /auth/login 验证码错误",
+    async () => {
+      return req("POST", "/auth/login", {
+        body: { username: "admin", password: "123456", captchaId, captchaCode: "0000" },
+      });
+    },
+    [10201, 10202],
+    "验证码校验拦截"
+  );
+  await test(
+    "POST /auth/login 用户不存在",
+    async () => {
+      // 用正确格式验证码 + 不存在的用户，验证业务链路（验证码校验失败则停在 102xx）
+      return req("POST", "/auth/login", {
+        body: { username: "no_such_user_xx", password: "123456", captchaId, captchaCode: "0000" },
+      });
+    },
+    [10201, 10202, 20001],
+    "验证码或用户链路"
+  );
 
   // ================= 3. 注册（公开） =================
   // 自助注册默认关闭：执行本节前先由管理员调用 PUT /config 将 register_enabled 置为 true
@@ -597,37 +612,67 @@ async function main() {
       body: { username: regUsername, password: "Test@123456", email: `${regUsername}@test.com`, realName: "测试用户" },
     });
   }, 200);
-  await test("POST /auth/register 重复注册 → 用户已存在", async () => {
-    return req("POST", "/auth/register", {
-      body: { username: regUsername, password: "Test@123456", email: `${regUsername}@test.com` },
-    });
-  }, 20002, "USER_ALREADY_EXIST");
-  await test("POST /auth/register 弱密码 → 拒绝", async () => {
-    return req("POST", "/auth/register", {
-      body: { username: `weak_${TS}`, password: "123456", email: `weak_${TS}@test.com` },
-    });
-  }, [10003, 20005], "Joi 或强度校验");
+  await test(
+    "POST /auth/register 重复注册 → 用户已存在",
+    async () => {
+      return req("POST", "/auth/register", {
+        body: { username: regUsername, password: "Test@123456", email: `${regUsername}@test.com` },
+      });
+    },
+    20002,
+    "USER_ALREADY_EXIST"
+  );
+  await test(
+    "POST /auth/register 弱密码 → 拒绝",
+    async () => {
+      return req("POST", "/auth/register", {
+        body: { username: `weak_${TS}`, password: "123456", email: `weak_${TS}@test.com` },
+      });
+    },
+    [10003, 20005],
+    "Joi 或强度校验"
+  );
 
   // ================= 4. 鉴权拦截（无 token / 假 token） =================
   console.log("\n── 4. 鉴权拦截 ──");
-  await test("GET /user/list 无 token → 未登录", async () => {
-    return req("GET", "/user/list");
-  }, 10101, "UNAUTHORIZED");
-  await test("GET /user/list 假 token → 无效", async () => {
-    return req("GET", "/user/list", { token: "fake.token.here" });
-  }, 10103, "TOKEN_INVALID");
-  await test("POST /auth/profile 无 token → 未登录", async () => {
-    return req("POST", "/auth/profile");
-  }, 10101, "UNAUTHORIZED");
+  await test(
+    "GET /user/list 无 token → 未登录",
+    async () => {
+      return req("GET", "/user/list");
+    },
+    10101,
+    "UNAUTHORIZED"
+  );
+  await test(
+    "GET /user/list 假 token → 无效",
+    async () => {
+      return req("GET", "/user/list", { token: "fake.token.here" });
+    },
+    10103,
+    "TOKEN_INVALID"
+  );
+  await test(
+    "POST /auth/profile 无 token → 未登录",
+    async () => {
+      return req("POST", "/auth/profile");
+    },
+    10101,
+    "UNAUTHORIZED"
+  );
 
   // ================= 5. auth（需登录） =================
   console.log("\n── 5. Auth（需登录） ──");
   await test("POST /auth/profile 获取当前用户+权限", async () => {
     return req("POST", "/auth/profile", { token: T });
   }, 200);
-  await test("POST /auth/refresh 无效 refreshToken → 拒绝", async () => {
-    return req("POST", "/auth/refresh", { body: { refreshToken: "invalid_token_for_test" } });
-  }, [10103, 10500], "TOKEN_INVALID");
+  await test(
+    "POST /auth/refresh 无效 refreshToken → 拒绝",
+    async () => {
+      return req("POST", "/auth/refresh", { body: { refreshToken: "invalid_token_for_test" } });
+    },
+    [10103, 10500],
+    "TOKEN_INVALID"
+  );
   await test("POST /auth/logout 登出", async () => {
     return req("POST", "/auth/logout", { token: T });
   }, 200);
@@ -644,9 +689,14 @@ async function main() {
     userId = r.data?.id || 0;
     return r;
   }, 200);
-  await test("POST /user 用户名重复 → 已存在", async () => {
-    return req("POST", "/user", { token: T, body: { username: newUser, password: "Test@123456" } });
-  }, 20002, "USER_ALREADY_EXIST");
+  await test(
+    "POST /user 用户名重复 → 已存在",
+    async () => {
+      return req("POST", "/user", { token: T, body: { username: newUser, password: "Test@123456" } });
+    },
+    20002,
+    "USER_ALREADY_EXIST"
+  );
   await test("GET /user/list 列表（按新用户过滤）", async () => {
     return req("GET", `/user/list?username=${newUser}`, { token: T });
   }, 200);
@@ -656,9 +706,14 @@ async function main() {
   await test("PUT /user/{id} 更新", async () => {
     return req("PUT", `/user/${userId || 1}`, { token: T, body: { realName: "更新后的姓名" } });
   }, 200);
-  await test("GET /user/{id} 不存在 → 用户不存在", async () => {
-    return req("GET", "/user/999999", { token: T });
-  }, 20001, "USER_NOT_EXIST");
+  await test(
+    "GET /user/{id} 不存在 → 用户不存在",
+    async () => {
+      return req("GET", "/user/999999", { token: T });
+    },
+    20001,
+    "USER_NOT_EXIST"
+  );
   await test("DELETE /user/{id} 删除（清理测试数据）", async () => {
     return req("DELETE", `/user/${userId || 1}`, { token: T });
   }, 200);
@@ -670,22 +725,37 @@ async function main() {
     fd.append("file", new Blob(["hello prisma-tsoa"], { type: "image/png" }), "test.png");
     return req("POST", "/upload/file", { token: T, formData: fd });
   }, 200);
-  await test("POST /upload/file 类型拒收 text/plain", async () => {
-    const fd = new FormData();
-    fd.append("file", new Blob(["hello prisma-tsoa"], { type: "text/plain" }), "test.txt");
-    return req("POST", "/upload/file", { token: T, formData: fd });
-  }, 70003, "FILE_TYPE_NOT_ALLOWED");
-  await test("POST /upload/file 大小超限（11MB > 10MB）", async () => {
-    const fd = new FormData();
-    fd.append("file", new Blob([new Uint8Array(11 * 1024 * 1024)], { type: "image/png" }), "big.png");
-    return req("POST", "/upload/file", { token: T, formData: fd });
-  }, 70002, "FILE_TOO_LARGE");
+  await test(
+    "POST /upload/file 类型拒收 text/plain",
+    async () => {
+      const fd = new FormData();
+      fd.append("file", new Blob(["hello prisma-tsoa"], { type: "text/plain" }), "test.txt");
+      return req("POST", "/upload/file", { token: T, formData: fd });
+    },
+    70003,
+    "FILE_TYPE_NOT_ALLOWED"
+  );
+  await test(
+    "POST /upload/file 大小超限（11MB > 10MB）",
+    async () => {
+      const fd = new FormData();
+      fd.append("file", new Blob([new Uint8Array(11 * 1024 * 1024)], { type: "image/png" }), "big.png");
+      return req("POST", "/upload/file", { token: T, formData: fd });
+    },
+    70002,
+    "FILE_TOO_LARGE"
+  );
 
   // ================= 8. 操作日志 =================
   console.log("\n── 8. 操作日志（RBAC 拦截验证） ──");
-  await test("GET /operate-log/list", async () => {
-    return req("GET", "/operate-log/list", { token: T });
-  }, 10104, "admin 无 adminCenter:log:list 权限，预期拦截");
+  await test(
+    "GET /operate-log/list",
+    async () => {
+      return req("GET", "/operate-log/list", { token: T });
+    },
+    10104,
+    "admin 无 adminCenter:log:list 权限，预期拦截"
+  );
 
   // ================= 9. 通知模块 =================
   console.log("\n── 9. 通知模块 ──");
@@ -759,39 +829,74 @@ async function main() {
 
   // ================= 12. 系统配置（RBAC 拦截验证） =================
   console.log("\n── 12. 系统配置（RBAC 拦截验证） ──");
-  await test("GET /config/all", async () => {
-    return req("GET", "/config/all", { token: T });
-  }, 10104, "admin 无 systemSettings:config:list 权限，预期拦截");
-  await test("PUT /config 更新配置", async () => {
-    return req("PUT", "/config", { token: T, body: { key: "site_name", value: "测试" } });
-  }, 10104, "admin 无 systemSettings:config:update 权限，预期拦截");
+  await test(
+    "GET /config/all",
+    async () => {
+      return req("GET", "/config/all", { token: T });
+    },
+    10104,
+    "admin 无 systemSettings:config:list 权限，预期拦截"
+  );
+  await test(
+    "PUT /config 更新配置",
+    async () => {
+      return req("PUT", "/config", { token: T, body: { key: "site_name", value: "测试" } });
+    },
+    10104,
+    "admin 无 systemSettings:config:update 权限，预期拦截"
+  );
 
   // ================= 13. 真实登录闭环 + refresh 成功 =================
   // dev 环境验证码接口返回明文答案（devCode），可走完整 captcha→login 链路
   if (!IS_PROD) {
     console.log("\n── 13. 登录闭环（验证码→登录→刷新） ──");
     let loginRefreshToken = "";
-    await test("POST /auth/login 完整链路（正确验证码+密码）", async () => {
-      const cap = await req("GET", "/captcha");
-      const r = await req("POST", "/auth/login", {
-        body: { username: "admin", password: process.env.ADMIN_PASSWORD || "123456", captchaId: cap.data?.captchaId, captchaCode: cap.data?.devCode },
-      });
-      loginRefreshToken = r.data?.refreshToken || "";
-      return r;
-    }, 200, "CAPTCHA→LOGIN→双令牌");
-    await test("POST /auth/refresh 真实 refreshToken 续期", async () => {
-      return req("POST", "/auth/refresh", { body: { refreshToken: loginRefreshToken } });
-    }, 200, "刷新成功返回新 access token");
-    await test("POST /auth/profile 用刷新后的新 token 获取用户", async () => {
-      const ref = await req("POST", "/auth/refresh", { body: { refreshToken: loginRefreshToken } });
-      return req("POST", "/auth/profile", { token: ref.data?.token || "" });
-    }, 200, "新 token 可用");
+    await test(
+      "POST /auth/login 完整链路（正确验证码+密码）",
+      async () => {
+        const cap = await req("GET", "/captcha");
+        const r = await req("POST", "/auth/login", {
+          body: {
+            username: "admin",
+            password: process.env.ADMIN_PASSWORD || "123456",
+            captchaId: cap.data?.captchaId,
+            captchaCode: cap.data?.devCode,
+          },
+        });
+        loginRefreshToken = r.data?.refreshToken || "";
+        return r;
+      },
+      200,
+      "CAPTCHA→LOGIN→双令牌"
+    );
+    await test(
+      "POST /auth/refresh 真实 refreshToken 续期",
+      async () => {
+        return req("POST", "/auth/refresh", { body: { refreshToken: loginRefreshToken } });
+      },
+      200,
+      "刷新成功返回新 access token"
+    );
+    await test(
+      "POST /auth/profile 用刷新后的新 token 获取用户",
+      async () => {
+        const ref = await req("POST", "/auth/refresh", { body: { refreshToken: loginRefreshToken } });
+        return req("POST", "/auth/profile", { token: ref.data?.token || "" });
+      },
+      200,
+      "新 token 可用"
+    );
   } else {
     // 生产环境：captcha 不返回 devCode → 登录闭环无法自动化，改为验证直签鉴权链路可用
     console.log("\n── 13. 生产环境：登录闭环跳过（见组 15），直签鉴权冒烟 ──");
-    await test("POST /auth/profile 生产环境 JWT 直签鉴权可用", async () => {
-      return req("POST", "/auth/profile", { token: T });
-    }, 200, "access token 在生产环境校验通过");
+    await test(
+      "POST /auth/profile 生产环境 JWT 直签鉴权可用",
+      async () => {
+        return req("POST", "/auth/profile", { token: T });
+      },
+      200,
+      "access token 在生产环境校验通过"
+    );
   }
 
   // ================= 14. 多角色 RBAC 差异 =================
@@ -817,43 +922,78 @@ async function main() {
     vwId = r.data?.id || 0;
     return r;
   }, 200);
-  await test("GET /user/list operator 无 adminCenter:user:list 被拒", async () => {
-    return req("GET", "/user/list", { token: signToken(opId || 2, opUser) });
-  }, 10104, "operator 仅业务菜单，管理接口被拒");
-  await test("POST /user viewer 无 adminCenter:user:create 被拒", async () => {
-    return req("POST", "/user", {
-      token: signToken(vwId || 3, vwUser),
-      body: { username: `vw_try_${TS}`, password: "Test@123456" },
-    });
-  }, 10104, "viewer 只有 list 权限");
-  await test("PUT /dict/type/1 viewer 无 superAdmin:dict:update 被拒", async () => {
-    return req("PUT", "/dict/type/1", { token: signToken(vwId || 3, vwUser), body: { typeName: "越权尝试" } });
-  }, 10104, "viewer 未绑定字典权限");
-  await test("DELETE /user/{id} 清理 operator/viewer 测试用户", async () => {
-    // 仅删除创建成功的用户（id>0），避免回退值误删真实数据
-    const ids = [opId, vwId].filter((x) => x > 0);
-    if (ids.length === 0) return { code: 200 };
-    const results = await Promise.all(ids.map((id) => req("DELETE", `/user/${id}`, { token: T })));
-    return { code: results.every((r) => r.code === 200) ? 200 : 10500 };
-  }, 200, "数据清理");
+  await test(
+    "GET /user/list operator 无 adminCenter:user:list 被拒",
+    async () => {
+      return req("GET", "/user/list", { token: signToken(opId || 2, opUser) });
+    },
+    10104,
+    "operator 仅业务菜单，管理接口被拒"
+  );
+  await test(
+    "POST /user viewer 无 adminCenter:user:create 被拒",
+    async () => {
+      return req("POST", "/user", {
+        token: signToken(vwId || 3, vwUser),
+        body: { username: `vw_try_${TS}`, password: "Test@123456" },
+      });
+    },
+    10104,
+    "viewer 只有 list 权限"
+  );
+  await test(
+    "PUT /dict/type/1 viewer 无 superAdmin:dict:update 被拒",
+    async () => {
+      return req("PUT", "/dict/type/1", { token: signToken(vwId || 3, vwUser), body: { typeName: "越权尝试" } });
+    },
+    10104,
+    "viewer 未绑定字典权限"
+  );
+  await test(
+    "DELETE /user/{id} 清理 operator/viewer 测试用户",
+    async () => {
+      // 仅删除创建成功的用户（id>0），避免回退值误删真实数据
+      const ids = [opId, vwId].filter((x) => x > 0);
+      if (ids.length === 0) return { code: 200 };
+      const results = await Promise.all(ids.map((id) => req("DELETE", `/user/${id}`, { token: T })));
+      return { code: results.every((r) => r.code === 200) ? 200 : 10500 };
+    },
+    200,
+    "数据清理"
+  );
 
   // ================= 15. 生产环境专属断言（仅 NODE_ENV=production） =================
   if (IS_PROD) {
     console.log("\n── 15. 生产环境专属（Swagger / devCode / 堆栈） ──");
-    await test("GET /api-docs 生产环境返回 404", async () => {
-      const r = await fetch(`http://localhost:${process.env.APP_PORT || 3000}/api-docs`, { method: "GET" });
-      const json = await r.json().catch(() => ({}));
-      return { code: json.code ?? (r.status === 404 ? 10404 : 10500) };
-    }, 10404, "Swagger 仅开发环境挂载");
-    await test("GET /captcha 生产环境不返回 devCode", async () => {
-      const r = await req("GET", "/captcha");
-      return { code: r.code === 200 && r.data && r.data.devCode === undefined ? 200 : (r.code || 10500) };
-    }, 200, "明文验证码仅限 dev 环境");
-    await test("错误响应不携带堆栈", async () => {
-      const r = await req("GET", "/user/999999", { token: T });
-      const leakFree = r.code === 10002 && !("stack" in r) && !("stackTrace" in r);
-      return { code: leakFree ? 200 : 10500 };
-    }, 200, "生产环境不泄露调用栈");
+    await test(
+      "GET /api-docs 生产环境返回 404",
+      async () => {
+        const r = await fetch(`http://localhost:${process.env.APP_PORT || 3000}/api-docs`, { method: "GET" });
+        const json = await r.json().catch(() => ({}));
+        return { code: json.code ?? (r.status === 404 ? 10404 : 10500) };
+      },
+      10404,
+      "Swagger 仅开发环境挂载"
+    );
+    await test(
+      "GET /captcha 生产环境不返回 devCode",
+      async () => {
+        const r = await req("GET", "/captcha");
+        return { code: r.code === 200 && r.data && r.data.devCode === undefined ? 200 : r.code || 10500 };
+      },
+      200,
+      "明文验证码仅限 dev 环境"
+    );
+    await test(
+      "错误响应不携带堆栈",
+      async () => {
+        const r = await req("GET", "/user/999999", { token: T });
+        const leakFree = r.code === 10002 && !("stack" in r) && !("stackTrace" in r);
+        return { code: leakFree ? 200 : 10500 };
+      },
+      200,
+      "生产环境不泄露调用栈"
+    );
   }
 
   // ================= 汇总 =================
@@ -1079,7 +1219,7 @@ npm run test
 - `dev`环境（`NODE_ENV` 默认）：`58` 用例 / `58 PASS`
   - 覆盖全部 28 个接口路径的正常/异常/权限分支
   - 真实登录闭环（`captcha` → `login` → `refresh` 续期）
-  - 多角色 RBAC 差异（ `operator`  / `viewer`）
+  - 多角色 RBAC 差异（ `operator` / `viewer`）
   - 上传类型与大小拒收（`text/plain`、`11MB`）
 - `prod` 环境（`NODE_ENV=production`）：`59 `用例 / `59 PASS`
   - 追加生产专属断言：`Swagger` 关闭 `404`、`captcha` 不返回 `devCode`、错误响应不泄露堆栈
@@ -1133,7 +1273,6 @@ npm run dev        # 自动生成 tsoa 路由 + 起服务（默认 admin/123456�
 ```
 
 > 1. `npm run db:rebuild` 是"一键操作系统"：自动执行 `prisma generate`（生成 Client）→ `migrate deploy`（建 13 张表）→ `db:seed`（灌 RBAC 种子数据）
->
 > 2. 全新克隆仓库后只需 `npm install` + 这一条命令即可就绪
 
 启动后：
@@ -1153,31 +1292,28 @@ npm run dev        # 自动生成 tsoa 路由 + 起服务（默认 admin/123456�
    #    JWT_SECRET=...       # 换成 ≥32 位随机串（安全底线）
    #    DB_TYPE=sqlite       # 开发默认；切 MySQL 时改 DB_TYPE + DATABASE_URL
    ```
-   
-   默认 `DB_TYPE=sqlite` 时无需安装数据库即可启动；`DB_TYPE=mysql` 需要先建库并导入 `sql/` 下建表 `SQL`
-   
-3. **安装依赖**：`npm install`
 
+   默认 `DB_TYPE=sqlite` 时无需安装数据库即可启动；`DB_TYPE=mysql` 需要先建库并导入 `sql/` 下建表 `SQL`
+
+3. **安装依赖**：`npm install`
 
 > 若安装失败，请`Remove-Item -Recurse -Force node_modules`然后`npm install better-sqlite3 --sqlite3_binary_host_mirror=https://github.com/WiseLibs/better-sqlite3/releases/download`
 
 1. **数据初始：**
-
-   * `npm run db:rebuild`一键初始化数据库（`generate + 建表 + seed，一步到位`）
-   * `npm run help:index` 一键初始化帮助中心文档
+   - `npm run db:rebuild`一键初始化数据库（`generate + 建表 + seed，一步到位`）
+   - `npm run help:index` 一键初始化帮助中心文档
 
 2. **启动服务**：`npm run dev`
 
    > 1. `dev` 内部依次执行：`tsoa spec-and-routes`（生成路由和文档）→ `kill-port 3000`（清端口）→ `dotenvInit`（自动检测并写入 `LOCAL_IP`）→ `nodemon --exec tsx app.ts`（热重载启动）
-   >
    > 2. 重新安装依赖时，启动前运行`npm run db:generate`
 
 3. **模式差异：**
 
-| DB_TYPE  | 需要准备                    | 首次启动                                  |
-| -------- | --------------------------- | ----------------------------------------- |
+| DB_TYPE  | 需要准备                    | 首次启动                                                  |
+| -------- | --------------------------- | --------------------------------------------------------- |
 | `sqlite` | 无                          | 自动创建数据库文件（`data/` 下 `.db` 文件），业务表手动建 |
-| `mysql`  | 建库 + 导入 `sql/` 建表 SQL | 连接池自动连接                            |
+| `mysql`  | 建库 + 导入 `sql/` 建表 SQL | 连接池自动连接                                            |
 
 ### 操作速查
 
@@ -1267,8 +1403,8 @@ const initSteps: { name: string; run: () => Promise<void> }[] = [
     run: async () => {
       // 校验数据库连接（DB_TYPE 由 .env 控制，连接串在 db/prisma.ts 注入）
       await prisma.$queryRaw`SELECT 1`;
-    }
-  }
+    },
+  },
 ];
 
 /**
@@ -1400,13 +1536,13 @@ import { RegisterRoutes } from "@src/routes/routes";
 const app: Application = express();
 
 // ---------- 6. 注册全局中间件（顺序敏感） ----------
-app.use(helmet());                    // 安全响应头（X-Frame-Options、CSP 等）
-app.use(corsMiddleware);              // 跨域
-app.use(express.json());              // 解析 JSON 请求体
+app.use(helmet()); // 安全响应头（X-Frame-Options、CSP 等）
+app.use(corsMiddleware); // 跨域
+app.use(express.json()); // 解析 JSON 请求体
 app.use(express.urlencoded({ extended: true }));
-app.use(responseMiddleware);          // 统一响应 res.success / res.error
-app.use(loggerMiddleware);            // Pino 结构化请求日志
-app.use(rateLimitMiddleware);         // 全局基础限流
+app.use(responseMiddleware); // 统一响应 res.success / res.error
+app.use(loggerMiddleware); // Pino 结构化请求日志
+app.use(rateLimitMiddleware); // 全局基础限流
 
 // ---------- 7. 静态资源目录 ----------
 app.use("/public", express.static(path.join(__dirname, "public")));
@@ -1431,12 +1567,12 @@ if (process.env.NODE_ENV !== "production") {
 }
 
 // ---------- 9. 注册业务路由（/api/v1 版本前缀） ----------
-app.use("/", healthRouter);           // 健康检查（无版本前缀，供探活）
+app.use("/", healthRouter); // 健康检查（无版本前缀，供探活）
 // 登录/验证码敏感接口严格限流：只防爆破，不牵连 register/profile/refresh/logout 等
 // 正常业务（避免一小时内测试/多设备登录被误伤）；全局接口仍受上方基础限流 300/15min
 app.post("/api/v1/auth/login", loginRateLimitMiddleware);
 app.get("/api/v1/captcha", loginRateLimitMiddleware);
-app.use(operateLogMiddleware);        // 操作日志中间件：自动记录写操作
+app.use(operateLogMiddleware); // 操作日志中间件：自动记录写操作
 // 传入自定义 multer：TSOA 默认 multer 只有 8MB 大小限制、无类型过滤，
 // 覆盖后上传类型（allowedTypes）与大小（MAX_FILE_SIZE）限制才真正生效
 RegisterRoutes(app, { multer: uploadMiddleware }); // TSOA 自动生成的业务路由（controller 内 @Route 已带 api/v1 前缀）
@@ -1563,7 +1699,7 @@ import { GLOBAL_ERROR_MAP } from "./errorCode";
 /** 错误标识 → 数字码 总映射表 */
 export const ERROR_MAP: Record<string, number> = {
   // 全局通用错误
-  ...GLOBAL_ERROR_MAP
+  ...GLOBAL_ERROR_MAP,
 };
 ```
 
@@ -1678,18 +1814,14 @@ export type ErrorCodeType = (typeof ERROR_CODE)[keyof typeof ERROR_CODE];
  * 自动把 ERROR_CODE 的 key 映射成字符串 → 数字码
  * 用于 error.middleware 自动识别 throw new Error("XXX") 里的标识
  */
-export const GLOBAL_ERROR_MAP: Record<string, number> = Object.fromEntries(
-  Object.entries(ERROR_CODE).map(([key, code]) => [key, code])
-);
+export const GLOBAL_ERROR_MAP: Record<string, number> = Object.fromEntries(Object.entries(ERROR_CODE).map(([key, code]) => [key, code]));
 
 /**
  * 数字码 → 字符串标识 反向映射（自动从 ERROR_CODE 派生）
  * 用于 BaseController.fail() 未传 msg 时自动补全标识，
  * 保证 code 与 msg 永远一一对应，不会写错
  */
-export const CODE_TO_MSG: Record<number, string> = Object.fromEntries(
-  Object.entries(ERROR_CODE).map(([key, code]) => [code, key])
-);
+export const CODE_TO_MSG: Record<number, string> = Object.fromEntries(Object.entries(ERROR_CODE).map(([key, code]) => [code, key]));
 
 /**
  * 错误码中文说明（与 ERROR_CODE 一一对应）
@@ -1753,7 +1885,6 @@ export const ERROR_DESC: Record<string, string> = {
   FILE_TYPE_NOT_ALLOWED: "文件类型不允许",
   FILE_UPLOAD_FAIL: "文件上传失败",
 };
-
 ```
 
 ### 业务状态
@@ -1780,7 +1911,7 @@ export const STATUS_CODE = {
   NOT_FOUND: 404,
   TOO_MANY_REQUESTS: 429,
   INTERNAL_ERROR: 500,
-  BAD_GATEWAY: 502
+  BAD_GATEWAY: 502,
 } as const;
 
 export type StatusCodeType = (typeof STATUS_CODE)[keyof typeof STATUS_CODE];
@@ -1800,7 +1931,7 @@ export const STATUS_DESC: Record<string, string> = {
   NOT_FOUND: "资源不存在",
   TOO_MANY_REQUESTS: "请求过多",
   INTERNAL_ERROR: "服务器内部错误",
-  BAD_GATEWAY: "网关错误"
+  BAD_GATEWAY: "网关错误",
 };
 
 export default STATUS_CODE;
@@ -1846,7 +1977,7 @@ export const MESSAGE_CODE = {
   UPLOAD_SUCCESS: "UPLOAD_SUCCESS",
 
   // ==================== 验证码 ====================
-  CAPTCHA_GENERATED: "CAPTCHA_GENERATED"
+  CAPTCHA_GENERATED: "CAPTCHA_GENERATED",
 } as const;
 
 /** 消息代码类型 */
@@ -1868,7 +1999,7 @@ export const MESSAGE_DESC: Record<string, string> = {
   DELETE_SUCCESS: "删除成功",
   BATCH_DELETE_SUCCESS: "批量删除成功",
   UPLOAD_SUCCESS: "上传成功",
-  CAPTCHA_GENERATED: "验证码已生成"
+  CAPTCHA_GENERATED: "验证码已生成",
 };
 ```
 
@@ -1900,7 +2031,7 @@ export const ROLE = {
   OPERATOR: "operator",
 
   /** 只读用户：只能看，不能改 */
-  VIEWER: "viewer"
+  VIEWER: "viewer",
 } as const;
 
 /** 角色类型 */
@@ -1915,7 +2046,7 @@ export const ROLE_DESC: Record<string, string> = {
   SUPER_ADMIN: "超级管理员：全部权限（仅设计者维护）",
   ADMIN: "系统管理员：全部业务权限（不含字典/角色/权限/菜单管理）",
   OPERATOR: "操作员：只能管业务，不能管用户/配置",
-  VIEWER: "只读用户：只能看，不能改"
+  VIEWER: "只读用户：只能看，不能改",
 };
 
 /**
@@ -1925,7 +2056,7 @@ export const ROLE_LEVEL: Record<string, number> = {
   SUPER_ADMIN: 100,
   ADMIN: 50,
   OPERATOR: 20,
-  VIEWER: 10
+  VIEWER: 10,
 };
 
 export const DEFAULT_ROLE_LEVEL = 0;
@@ -2011,7 +2142,6 @@ export class BaseController extends Controller {
     return this.fail(ERROR_CODE.PARAM_INVALID, `PARAM_INVALID:${field}`);
   }
 }
-
 ```
 
 ### 项目配置
@@ -2119,7 +2249,7 @@ function parseMysqlUrl(url: string): MysqlConfig {
     password: m[2],
     host: m[3],
     port: Number(m[4]),
-    database: m[5]
+    database: m[5],
   };
 }
 
@@ -2129,10 +2259,7 @@ const dbType = (env.DB_TYPE || "sqlite") as DbType;
 const dbConfig: DbConfig = {
   type: dbType,
   url: env.DATABASE_URL,
-  mysql:
-    dbType === "mysql"
-      ? parseMysqlUrl(env.DATABASE_URL)
-      : { host: "", port: 3306, user: "", password: "", database: "" }
+  mysql: dbType === "mysql" ? parseMysqlUrl(env.DATABASE_URL) : { host: "", port: 3306, user: "", password: "", database: "" },
 };
 
 export default dbConfig;
@@ -2196,7 +2323,11 @@ const envSchema = z.object({
 
   // ---- 上传 ----
   UPLOAD_DIR: z.string().default("./uploads"),
-  MAX_FILE_SIZE: z.coerce.number().int().positive().default(10 * 1024 * 1024),
+  MAX_FILE_SIZE: z.coerce
+    .number()
+    .int()
+    .positive()
+    .default(10 * 1024 * 1024),
 
   // ---- 限流 ----
   RATE_LIMIT_MAX: z.coerce.number().int().positive().default(300),
@@ -2206,7 +2337,10 @@ const envSchema = z.object({
 
   // ---- 日志 ----
   // 是否打印控制台：true=控制台+文件，false=仅写文件 logs/app.log
-  LOG_CONSOLE: z.enum(["true", "false"]).default("true").transform((v) => v === "true"),
+  LOG_CONSOLE: z
+    .enum(["true", "false"])
+    .default("true")
+    .transform((v) => v === "true"),
   // 单文件大小上限（MB），超过即轮转为 app-时间戳.log
   LOG_MAX_SIZE_MB: z.coerce.number().int().positive().default(10),
   // 历史日志保留份数（不含当前 app.log）
@@ -2396,7 +2530,7 @@ ${buildTableRows(STATUS_CODE, STATUS_DESC)}
 ${buildRoleRows(ROLE_DESC)}
 
 </details>
-`
+`,
 };
 
 export default swaggerInfo;
@@ -2431,16 +2565,10 @@ export interface UploadConfig {
 const uploadConfig: UploadConfig = {
   dir: env.UPLOAD_DIR,
   maxSize: env.MAX_FILE_SIZE,
-  allowedTypes: [
-    "image/jpeg",
-    "image/png",
-    "image/gif",
-    "application/pdf",
-  ],
+  allowedTypes: ["image/jpeg", "image/png", "image/gif", "application/pdf"],
 };
 
 export default uploadConfig;
-
 ```
 
 ## 数据配置
@@ -2893,7 +3021,6 @@ function createPrismaClient(): PrismaClient {
 export const prisma = createPrismaClient();
 
 export default prisma;
-
 ```
 
 ## 核心功能
@@ -2964,7 +3091,6 @@ export default function responseMiddleware(req: Request, res: Response, next: Ne
 
   next();
 }
-
 ```
 
 ### 错误处理
@@ -3013,7 +3139,7 @@ function buildErrorRes(code: number, msg?: string) {
     code,
     msg: msg ?? CODE_TO_MSG[code] ?? "UNKNOWN_ERROR",
     data: null,
-    timestamp: Date.now()
+    timestamp: Date.now(),
   };
 }
 
@@ -3190,7 +3316,9 @@ async function getUserPermissions(userId: number): Promise<string[]> {
 }
 
 /** 从 Authorization 头解析并校验 Access Token，返回 decoded 或错误对象 */
-function verifyAccessToken(req: Request): { ok: true; decoded: any } | { ok: false; error: { name: string; message: string; status: number } } {
+function verifyAccessToken(
+  req: Request
+): { ok: true; decoded: any } | { ok: false; error: { name: string; message: string; status: number } } {
   const authHeader = req.headers.authorization;
   if (!authHeader || !authHeader.startsWith("Bearer ")) {
     return { ok: false, error: { name: "Unauthorized", message: "No token provided", status: 401 } };
@@ -3236,13 +3364,17 @@ export function requirePermission(permission: string) {
   return async (req: Request, res: Response, next: NextFunction): Promise<void> => {
     const user = (req as any).user as { userId: number } | undefined;
     if (!user) {
-      res.status(STATUS_CODE.UNAUTHORIZED).json({ code: ERROR_CODE.UNAUTHORIZED, msg: CODE_TO_MSG[ERROR_CODE.UNAUTHORIZED], data: null, timestamp: Date.now() });
+      res
+        .status(STATUS_CODE.UNAUTHORIZED)
+        .json({ code: ERROR_CODE.UNAUTHORIZED, msg: CODE_TO_MSG[ERROR_CODE.UNAUTHORIZED], data: null, timestamp: Date.now() });
       return;
     }
 
     const perms = await getUserPermissions(user.userId);
     if (!perms.includes(permission)) {
-      res.status(STATUS_CODE.FORBIDDEN).json({ code: ERROR_CODE.PERMISSION_DENIED, msg: CODE_TO_MSG[ERROR_CODE.PERMISSION_DENIED], data: null, timestamp: Date.now() });
+      res
+        .status(STATUS_CODE.FORBIDDEN)
+        .json({ code: ERROR_CODE.PERMISSION_DENIED, msg: CODE_TO_MSG[ERROR_CODE.PERMISSION_DENIED], data: null, timestamp: Date.now() });
       return;
     }
     next();
@@ -3256,11 +3388,7 @@ export function requirePermission(permission: string) {
  *   @Security("bearerAuth")               // 只要登录
  *   @Security("bearerAuth", ["adminCenter:user:list"])  // 需要指定权限码
  */
-export function expressAuthentication(
-  request: Request,
-  securityName: string,
-  scopes?: string[]
-): Promise<any> {
+export function expressAuthentication(request: Request, securityName: string, scopes?: string[]): Promise<any> {
   return new Promise(async (resolve, reject) => {
     if (securityName === "bearerAuth") {
       const authHeader = request.headers.authorization;
@@ -3335,11 +3463,12 @@ const ALLOWED_ORIGINS = (process.env.CORS_ORIGINS || "").split(",").filter(Boole
 
 const corsOptions: cors.CorsOptions = {
   // 开发环境放开；生产环境仅允许白名单
-  origin: env.NODE_ENV === "production"
-    ? ALLOWED_ORIGINS.length > 0
-      ? ALLOWED_ORIGINS
-      : false // 白名单为空则全部拒绝（安全）
-    : true,
+  origin:
+    env.NODE_ENV === "production"
+      ? ALLOWED_ORIGINS.length > 0
+        ? ALLOWED_ORIGINS
+        : false // 白名单为空则全部拒绝（安全）
+      : true,
   methods: ["GET", "POST", "PUT", "DELETE", "PATCH", "OPTIONS"],
   allowedHeaders: ["Content-Type", "Authorization"],
   exposedHeaders: ["Content-Disposition"],
@@ -3347,7 +3476,6 @@ const corsOptions: cors.CorsOptions = {
 };
 
 export default cors(corsOptions);
-
 ```
 
 ### 启动初始
@@ -3427,7 +3555,6 @@ function updateLocalIP(): void {
 ensureDirs();
 updateLocalIP();
 console.log("✅ Environment Variable Initialization Completed.");
-
 ```
 
 ### 请求日志
@@ -3473,7 +3600,6 @@ const httpLogger = pinoHttp({
 });
 
 export default httpLogger;
-
 ```
 
 ### 前端验证
@@ -3543,7 +3669,7 @@ export function operateLogMiddleware(req: Request, res: Response, next: NextFunc
       const actionMap: Record<string, string> = {
         POST: "CREATE",
         PUT: "UPDATE",
-        DELETE: "DELETE"
+        DELETE: "DELETE",
       };
       const action = actionMap[method] || method;
 
@@ -3553,7 +3679,7 @@ export function operateLogMiddleware(req: Request, res: Response, next: NextFunc
         module,
         action,
         description: `${method} ${path}`,
-        ip: req.ip || ""
+        ip: req.ip || "",
       });
     } catch (e) {
       // 操作日志记录失败：
@@ -3563,7 +3689,6 @@ export function operateLogMiddleware(req: Request, res: Response, next: NextFunc
 
   next();
 }
-
 ```
 
 ### 访问限流
@@ -3625,7 +3750,6 @@ export const loginRateLimitMiddleware = rateLimit({
     });
   },
 });
-
 ```
 
 ### 文件上传
@@ -3832,7 +3956,6 @@ export function collectWithAncestors(menuIds: Set<number>, allMenus: FlatMenu[])
 
   return allMenus.filter((m) => picked.has(m.id));
 }
-
 ```
 
 ### 文件工具
@@ -3869,12 +3992,11 @@ export function safeUnlink(filePath: string): void {
 export function resolvePath(...segments: string[]): string {
   return path.resolve(...segments);
 }
-
 ```
 
 ### JWT工具
 
-`src/utils/jwt.ts`为 `JWT`工具，封装  `token` 签发和校验：
+`src/utils/jwt.ts`为 `JWT`工具，封装 `token` 签发和校验：
 
 ```ts
 /**
@@ -3909,11 +4031,7 @@ export interface JwtPayload {
  * @param payload 用户信息
  */
 export function signAccessToken(payload: JwtPayload): string {
-  return jwt.sign(
-    { ...payload, type: "access" },
-    jwtConfig.secret,
-    { expiresIn: jwtConfig.expiresIn } as SignOptions
-  );
+  return jwt.sign({ ...payload, type: "access" }, jwtConfig.secret, { expiresIn: jwtConfig.expiresIn } as SignOptions);
 }
 
 /**
@@ -3921,11 +4039,7 @@ export function signAccessToken(payload: JwtPayload): string {
  * @param payload 用户信息
  */
 export function signRefreshToken(payload: JwtPayload): string {
-  return jwt.sign(
-    { ...payload, type: "refresh" },
-    jwtConfig.secret,
-    { expiresIn: jwtConfig.refreshExpiresIn } as SignOptions
-  );
+  return jwt.sign({ ...payload, type: "refresh" }, jwtConfig.secret, { expiresIn: jwtConfig.refreshExpiresIn } as SignOptions);
 }
 
 /**
@@ -3947,7 +4061,6 @@ export function verifyRefreshToken(token: string): JwtPayload | null {
   if (!payload || payload.type !== "refresh") return null;
   return payload;
 }
-
 ```
 
 ### 日志工具
@@ -4018,13 +4131,9 @@ streams.push({
   }),
 });
 
-const logger = pino(
-  { level: env.NODE_ENV === "production" ? "info" : "debug" },
-  pino.multistream(streams)
-);
+const logger = pino({ level: env.NODE_ENV === "production" ? "info" : "debug" }, pino.multistream(streams));
 
 export default logger;
-
 ```
 
 ### 日志轮转
@@ -4171,7 +4280,6 @@ export function getLogRotateState(opts: RotateOptions): RotateState {
     : 0;
   return { file, size, maxSizeBytes: opts.maxSizeBytes, maxFiles: opts.maxFiles, history };
 }
-
 ```
 
 ### 密码工具
@@ -4224,7 +4332,6 @@ export function checkPasswordStrength(password: string): { valid: boolean; messa
   }
   return { valid: true };
 }
-
 ```
 
 ### 哈希工具
@@ -4485,8 +4592,6 @@ model DictData {
 
 ```
 
-
-
 ### 帮助中心
 
 帮助中心分 **静态 / AI** 双模式，两种模式共用同一数据源 `help_doc` 表（数据在后端数据库，前端文件树、文章内容、图片资源全部走后端网络请求）。
@@ -4506,36 +4611,36 @@ model DictData {
 
 用户侧（`static` / `ai` 共用）：
 
-| 方法 | 路径 | 说明 |
-| --- | --- | --- |
-| GET | `/api/v1/help/tree?locale=` | 文档树（版块→章节→文章），未传 locale 时读 `system_configs.default_locale`；locale 统一小写连字符 |
-| GET | `/api/v1/help/article?locale=&path=` | 文章正文（md 内 `assets/` 图片路径已重写为 `/api/v1/help/assets/`） |
-| GET | `/api/v1/help/assets/*` | md 内图片资源（后端静态托管 `data/help/assets`） |
-| POST | `/api/v1/help/chat` | AI 对话 `{ question, locale, history }` → `{ answer, sources }` |
-| GET | `/api/v1/help/mode` | 当前帮助模式（`static` / `ai`） |
-| GET | `/api/v1/help/ai-health` | AI 服务健康状态（Ollama 连通性 + 配置模型是否已安装） |
+| 方法 | 路径                                 | 说明                                                                                              |
+| ---- | ------------------------------------ | ------------------------------------------------------------------------------------------------- |
+| GET  | `/api/v1/help/tree?locale=`          | 文档树（版块→章节→文章），未传 locale 时读 `system_configs.default_locale`；locale 统一小写连字符 |
+| GET  | `/api/v1/help/article?locale=&path=` | 文章正文（md 内 `assets/` 图片路径已重写为 `/api/v1/help/assets/`）                               |
+| GET  | `/api/v1/help/assets/*`              | md 内图片资源（后端静态托管 `data/help/assets`）                                                  |
+| POST | `/api/v1/help/chat`                  | AI 对话 `{ question, locale, history }` → `{ answer, sources }`                                   |
+| GET  | `/api/v1/help/mode`                  | 当前帮助模式（`static` / `ai`）                                                                   |
+| GET  | `/api/v1/help/ai-health`             | AI 服务健康状态（Ollama 连通性 + 配置模型是否已安装）                                             |
 
 管理端（超级面板 / 知识管理中心）：
 
-| 方法 | 路径 | 权限 |
-| --- | --- | --- |
-| GET | `/api/v1/help/admin/locales` | `superAdmin:knowledgeCenter:list` |
-| POST | `/api/v1/help/admin/locales/:locale/init` | `superAdmin:help:slot:manage` |
-| PATCH | `/api/v1/help/admin/locales/:locale` | `superAdmin:help:slot:manage` |
-| DELETE | `/api/v1/help/admin/locales/:locale` | `superAdmin:help:slot:manage` |
-| GET | `/api/v1/help/admin/slots` | `superAdmin:knowledgeCenter:list` |
-| GET | `/api/v1/help/admin/slots/file-options` | `superAdmin:help:slot:manage` |
-| POST | `/api/v1/help/admin/slots` | `superAdmin:help:slot:manage` |
-| PUT | `/api/v1/help/admin/slots/:docKey` | `superAdmin:help:slot:manage` |
-| DELETE | `/api/v1/help/admin/slots/:docKey` | `superAdmin:help:slot:manage` |
-| GET | `/api/v1/help/admin/slots/:docKey` | `superAdmin:knowledgeCenter:list` |
-| GET | `/api/v1/help/admin/slots/:docKey/content` | `superAdmin:knowledgeCenter:list` |
-| GET | `/api/v1/help/admin/slots/:docKey/file` | `superAdmin:knowledgeCenter:list` |
-| PUT | `/api/v1/help/admin/slots/:docKey/content` | 空槽位 `superAdmin:help:doc:create`，已有文件 `superAdmin:help:doc:update` |
-| DELETE | `/api/v1/help/admin/slots/:docKey/content` | `superAdmin:help:doc:delete` |
-| POST | `/api/v1/help/admin/assets` | `superAdmin:help:doc:update` |
-| POST | `/api/v1/help/admin/reindex` | `superAdmin:help:reindex` |
-| GET | `/api/v1/help/admin/index/status` | `superAdmin:knowledgeCenter:list` |
+| 方法   | 路径                                       | 权限                                                                       |
+| ------ | ------------------------------------------ | -------------------------------------------------------------------------- |
+| GET    | `/api/v1/help/admin/locales`               | `superAdmin:knowledgeCenter:list`                                          |
+| POST   | `/api/v1/help/admin/locales/:locale/init`  | `superAdmin:help:slot:manage`                                              |
+| PATCH  | `/api/v1/help/admin/locales/:locale`       | `superAdmin:help:slot:manage`                                              |
+| DELETE | `/api/v1/help/admin/locales/:locale`       | `superAdmin:help:slot:manage`                                              |
+| GET    | `/api/v1/help/admin/slots`                 | `superAdmin:knowledgeCenter:list`                                          |
+| GET    | `/api/v1/help/admin/slots/file-options`    | `superAdmin:help:slot:manage`                                              |
+| POST   | `/api/v1/help/admin/slots`                 | `superAdmin:help:slot:manage`                                              |
+| PUT    | `/api/v1/help/admin/slots/:docKey`         | `superAdmin:help:slot:manage`                                              |
+| DELETE | `/api/v1/help/admin/slots/:docKey`         | `superAdmin:help:slot:manage`                                              |
+| GET    | `/api/v1/help/admin/slots/:docKey`         | `superAdmin:knowledgeCenter:list`                                          |
+| GET    | `/api/v1/help/admin/slots/:docKey/content` | `superAdmin:knowledgeCenter:list`                                          |
+| GET    | `/api/v1/help/admin/slots/:docKey/file`    | `superAdmin:knowledgeCenter:list`                                          |
+| PUT    | `/api/v1/help/admin/slots/:docKey/content` | 空槽位 `superAdmin:help:doc:create`，已有文件 `superAdmin:help:doc:update` |
+| DELETE | `/api/v1/help/admin/slots/:docKey/content` | `superAdmin:help:doc:delete`                                               |
+| POST   | `/api/v1/help/admin/assets`                | `superAdmin:help:doc:update`                                               |
+| POST   | `/api/v1/help/admin/reindex`               | `superAdmin:help:reindex`                                                  |
+| GET    | `/api/v1/help/admin/index/status`          | `superAdmin:knowledgeCenter:list`                                          |
 
 旧 `GET /api/v1/help/admin/docs`（直接读索引的只读列表）保留兼容。
 
@@ -4606,31 +4711,31 @@ model DictData {
 
 #### 错误码
 
-| 错误码 | 常量 | 含义 |
-| --- | --- | --- |
-| 30010 | `HELP_LOCALE_NOT_FOUND` | 语言目录或 manifest 不存在 |
-| 30011 | `HELP_SLOT_NOT_FOUND` | 文档位不存在 |
-| 30012 | `HELP_DOC_CONFLICT` | 文档位/文件/路径冲突，或基线已变化 |
-| 30013 | `HELP_PATH_INVALID` | 文件或文章路径非法 |
-| 30014 | `HELP_MANIFEST_INVALID` | manifest 结构非法 |
-| 30015 | `HELP_INDEX_BUSY` | 索引重建进行中或索引写入失败 |
-| 30016 | `HELP_FILE_NOT_FOUND` | 文档文件不存在 |
-| 30017 | `HELP_SLOT_HAS_CHILDREN` | 文档位仍有子节点，不能删除 |
-| 30018 | `HELP_CONFIRM_REQUIRED` | 删除类操作缺少 `confirm=docKey` / `confirm=locale` |
-| 30019 | `HELP_LOCALE_CONFLICT` | 目标语言目录已存在 |
+| 错误码 | 常量                     | 含义                                               |
+| ------ | ------------------------ | -------------------------------------------------- |
+| 30010  | `HELP_LOCALE_NOT_FOUND`  | 语言目录或 manifest 不存在                         |
+| 30011  | `HELP_SLOT_NOT_FOUND`    | 文档位不存在                                       |
+| 30012  | `HELP_DOC_CONFLICT`      | 文档位/文件/路径冲突，或基线已变化                 |
+| 30013  | `HELP_PATH_INVALID`      | 文件或文章路径非法                                 |
+| 30014  | `HELP_MANIFEST_INVALID`  | manifest 结构非法                                  |
+| 30015  | `HELP_INDEX_BUSY`        | 索引重建进行中或索引写入失败                       |
+| 30016  | `HELP_FILE_NOT_FOUND`    | 文档文件不存在                                     |
+| 30017  | `HELP_SLOT_HAS_CHILDREN` | 文档位仍有子节点，不能删除                         |
+| 30018  | `HELP_CONFIRM_REQUIRED`  | 删除类操作缺少 `confirm=docKey` / `confirm=locale` |
+| 30019  | `HELP_LOCALE_CONFLICT`   | 目标语言目录已存在                                 |
 
 #### 跨库说明
 
-检索不依赖 FTS5：查询词构造（整句 + 分隔拆词 + 中文双字滑窗，≤20 词）→ 跨库通用 `LIKE`（% _ 转义）→ JS 评分（命中词 title×3 / summary×2 / content×1 累加，取 top3），SQLite / MySQL 行为一致。`help_doc` 表在原有索引字段上新增 `section_key` / `chapter_key` / `doc_key` / `content_hash` / `file_size` / `file_mtime` / `indexed_at`，并用 `(locale, doc_key)` 部分唯一索引约束文档位；Prisma 版见 `prisma/schema.prisma` 的 `model HelpDoc`，手写 SQL 版见 `scripts/schema.sqlite.sql` 与 `scripts/schema.mysql.sql`（旧库由 `helpDb.ts` 启动时逐列补齐）。
+检索不依赖 FTS5：查询词构造（整句 + 分隔拆词 + 中文双字滑窗，≤20 词）→ 跨库通用 `LIKE`（% \_ 转义）→ JS 评分（命中词 title×3 / summary×2 / content×1 累加，取 top3），SQLite / MySQL 行为一致。`help_doc` 表在原有索引字段上新增 `section_key` / `chapter_key` / `doc_key` / `content_hash` / `file_size` / `file_mtime` / `indexed_at`，并用 `(locale, doc_key)` 部分唯一索引约束文档位；Prisma 版见 `prisma/schema.prisma` 的 `model HelpDoc`，手写 SQL 版见 `scripts/schema.sqlite.sql` 与 `scripts/schema.mysql.sql`（旧库由 `helpDb.ts` 启动时逐列补齐）。
 
 #### 环境变量
 
-| 变量 | 默认值 | 说明 |
-| --- | --- | --- |
-| `OLLAMA_BASE_URL` | `http://127.0.0.1:11434` | Ollama 服务地址 |
-| `OLLAMA_MODEL` | `qwen2.5:7b` | 对话模型（服务器已装） |
-| `OLLAMA_TIMEOUT` | `60` | 调用超时（秒），超时自动降级 |
-| `HELP_DATA_DIR` | `./data/help` | 文档投喂目录 |
+| 变量              | 默认值                   | 说明                         |
+| ----------------- | ------------------------ | ---------------------------- |
+| `OLLAMA_BASE_URL` | `http://127.0.0.1:11434` | Ollama 服务地址              |
+| `OLLAMA_MODEL`    | `qwen2.5:7b`             | 对话模型（服务器已装）       |
+| `OLLAMA_TIMEOUT`  | `60`                     | 调用超时（秒），超时自动降级 |
+| `HELP_DATA_DIR`   | `./data/help`            | 文档投喂目录                 |
 
 ### 聚合文件
 
@@ -4678,7 +4783,6 @@ declare global {
 }
 
 export {};
-
 ```
 
 ### 验证类型
@@ -4696,19 +4800,19 @@ export {};
 
 declare module "svg-captcha" {
   interface CaptchaOptions {
-    size?: number;           // 验证码长度
-    fontSize?: number;       // 字体大小
-    width?: number;          // 图片宽度
-    height?: number;         // 图片高度
-    ignoreChars?: string;    // 排除的字符
-    noise?: number;          // 干扰线条数
-    color?: boolean;         // 是否彩色
-    background?: string;     // 背景色
+    size?: number; // 验证码长度
+    fontSize?: number; // 字体大小
+    width?: number; // 图片宽度
+    height?: number; // 图片高度
+    ignoreChars?: string; // 排除的字符
+    noise?: number; // 干扰线条数
+    color?: boolean; // 是否彩色
+    background?: string; // 背景色
   }
 
   interface CaptchaResponse {
-    data: string;            // SVG 字符串
-    text: string;            // 验证码答案
+    data: string; // SVG 字符串
+    text: string; // 验证码答案
   }
 
   function createCaptcha(options?: CaptchaOptions): CaptchaResponse;
@@ -4730,7 +4834,7 @@ declare module "svg-captcha" {
 service.interceptors.response.use((response) => {
   const res = response.data;
   if (res.code === 200) {
-    return res.data;  // 成功，直接返回 data
+    return res.data; // 成功，直接返回 data
   } else {
     // 失败，按 code 映射多语言提示
     const message = i18n.global.t(`error.${res.msg}`);
@@ -4793,7 +4897,7 @@ export default {
     CREATE_SUCCESS: "创建成功",
     UPDATE_SUCCESS: "更新成功",
     DELETE_SUCCESS: "删除成功",
-  }
+  },
 };
 ```
 
@@ -4811,19 +4915,19 @@ export default {
     CREATE_SUCCESS: "Created successfully",
     UPDATE_SUCCESS: "Updated successfully",
     DELETE_SUCCESS: "Deleted successfully",
-  }
+  },
 };
 ```
 
 #### 数据约定
 
-| 约定     | 说明                                                         |
-| -------- | ------------------------------------------------------------ |
-| 权威源   | 错误标识/码 → `src/constants/errorCode.ts`（`ERROR_CODE` + `GLOBAL_ERROR_MAP` + `CODE_TO_MSG`）；成功标识 → `src/constants/messageCode.ts` |
-| 前端字典 | `docs/i18n-codes.json`（msg → code + 中/英文文案），前端 import 即得 i18n 基座 |
-| 规范文档 | `docs/响应码字典.md`（完整字典 + 前端解析示例）              |
+| 约定     | 说明                                                                                                                                                |
+| -------- | --------------------------------------------------------------------------------------------------------------------------------------------------- |
+| 权威源   | 错误标识/码 → `src/constants/errorCode.ts`（`ERROR_CODE` + `GLOBAL_ERROR_MAP` + `CODE_TO_MSG`）；成功标识 → `src/constants/messageCode.ts`          |
+| 前端字典 | `docs/i18n-codes.json`（msg → code + 中/英文文案），前端 import 即得 i18n 基座                                                                      |
+| 规范文档 | `docs/响应码字典.md`（完整字典 + 前端解析示例）                                                                                                     |
 | 三种返回 | 成功 `this.ok(data, msg?)`；主动失败 `this.fail(ERROR_CODE.XXX)`（msg 自动补全）；Joi 失败 `this.failJoi(error)`（自动转 `PARAM_INVALID:<字段名>`） |
-| 业务错误 | service 里 `throw new Error("USER_NOT_EXIST")`，errorHandler 自动映射 code + 同一 msg |
+| 业务错误 | service 里 `throw new Error("USER_NOT_EXIST")`，errorHandler 自动映射 code + 同一 msg                                                               |
 
 #### 分页查询
 
@@ -4878,15 +4982,15 @@ await axios.post("/api/upload/file", formData, {
 
 ### 许可范围
 
-- ✅ 商业使用（可用于商业产品及产品销售） 
-- ✅ 修改 
+- ✅ 商业使用（可用于商业产品及产品销售）
+- ✅ 修改
 - ✅ 分发
-- ✅ 私人使用 
+- ✅ 私人使用
 - ✅ 分许可
 
 ### 限制说明
 
-- ⚠️ 无担保：作者不对使用本软件造成的任何损失承担责任。 
-- ⚠️ 必须保留版权与许可证声明。 
-- ⚠️ 不授予使用原作者商标或项目名称的相关权利。 
+- ⚠️ 无担保：作者不对使用本软件造成的任何损失承担责任。
+- ⚠️ 必须保留版权与许可证声明。
+- ⚠️ 不授予使用原作者商标或项目名称的相关权利。
 - ⚠️ 本项目的依赖包拥有各自独立的开源许可证，请单独核查每个依赖。

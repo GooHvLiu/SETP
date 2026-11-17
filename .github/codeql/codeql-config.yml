@@ -1,4 +1,4 @@
-name: "SETP backend CodeQL config"
+name: "Setp backend CodeQL config"
 
 paths-ignore:
   - "**/node_modules/**"

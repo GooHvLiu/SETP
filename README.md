@@ -1,20 +1,36 @@
-# SETP 后端模板
+# Setp 后端模板
 
-> Express + TypeScript + Prisma + TSOA 后端框架模板，开箱即用的完整工程化模板。
+> Express + TypeScript + Prisma 后端 Server 框架模板，开箱即用的完整工程化模板。
 
-[![CI](https://github.com/GooHvLiu/SETP/actions/workflows/ci.yml/badge.svg?branch=main)](https://github.com/GooHvLiu/SETP/actions/workflows/ci.yml)
-[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](LICENSE)
-[![Node](https://img.shields.io/badge/node-%3E%3D20.19-339933)](package.json)
+文档：[贡献指南](CONTRIBUTING.md) · [安全策略](SECURITY.md) · [变更记录](CHANGELOG.md) · [接口契约](#接口契约)
+
+[![CI](https://github.com/GooHvLiu/Setp/actions/workflows/ci.yml/badge.svg?branch=main)](https://github.com/GooHvLiu/Setp/actions/workflows/ci.yml)[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](LICENSE)[![Node](https://img.shields.io/badge/node-%3E%3D20.19-339933)](package.json)
+
+## 使用模板
+
+如果要基于本模板开始一个新项目，推荐用 GitHub 的模板流程，而不是直接 fork。
+
+1. 在仓库页面点 **Use this template / 使用此模板** → **Create a new repository / 创建新仓库**。
+2. 把新仓库克隆到本地: `git clone https://github.com/<your-account>/<your-repo>.git`
+3. 先按 “快速开始” 的 SQLite 方式跑通，再按需切换到 MySQL。
+4. 修改 `package.json` 的 `name`、`description`，以及 README 标题和仓库地址。
+5. 正式部署前替换模板默认密码，见[模板密码](#模板密码)。
+6. 保留 `LICENSE` 中的 MIT 许可与版权声明；修改或再分发时按 MIT 要求保留原声明。
+
+> 只想学习或评估模板时，可以直接 clone 本仓库；要开始自己的项目时，再用 **Use this template**。
 
 ## 快速开始
 
-**方式一：本机 MySQL（默认）**
+> 环境要求：Node.js >= 20.19.0，推荐 Node 24 LTS；安装依赖与运行服务必须使用同一个 Node 版本，否则 `better-sqlite3` 会报 `NODE_MODULE_VERSION` 不匹配。SQLite 方式无需额外数据库，MySQL 方式需要 MySQL 8.0+ 或 MariaDB 10.6+。
+
+**方式一：SQLite 零配置（推荐首次体验）**
+
+适合第一次运行、只想先看接口和后台能力的情况，不需要安装 MySQL。
 
 ```bash
-cp .env.example .env       # 默认 DB_TYPE=mysql
-# 修改 DATABASE_URL 为实际 MySQL 地址，并提前建空库
 npm ci
-npm start                  # init → db:prepare → 生产构建 → node dist/app.js
+npm run db:rebuild   # 没有 .env 时自动按 SQLite 生成
+npm start
 # API: http://localhost:3000
 # Swagger: http://localhost:3000/api-docs（NODE_ENV=production 时关闭）
 ```
@@ -23,12 +39,16 @@ npm start                  # init → db:prepare → 生产构建 → node dist/
 
 > 迁移或复制项目时只复制源码与 `package*.json`，不要复制 `node_modules`。Windows 下旧目录里的锁定文件会让 `npm install` 清理阶段报 `EPERM`；到新目录后重新执行 `npm install` 即可。
 
-**方式二：SQLite 零配置体验**
+**方式二：本机 MySQL**
 
 ```bash
+cp .env.example .env       # macOS / Linux
+# Windows PowerShell: Copy-Item .env.example .env
+# 修改 DATABASE_URL 为实际 MySQL 地址，并提前建空库
 npm ci
-npm run db:rebuild   # 没有 .env 时自动按 SQLite 生成
-npm start
+npm start                  # init → db:prepare → 生产构建 → node dist/app.js
+# API: http://localhost:3000
+# Swagger: http://localhost:3000/api-docs（NODE_ENV=production 时关闭）
 ```
 
 **方式三：Docker Compose**
@@ -37,7 +57,23 @@ Compose 需要 `MYSQL_ROOT_PASSWORD`、`MYSQL_PASSWORD`、`JWT_SECRET`、`CONFIG
 
 `better-sqlite3` 在 Alpine 上无预编译包时会回退源码编译。默认从 `nodejs.org` 下载 Node 头文件；国内网络可在 `.env.docker` 增加 `NODE_DIST_URL=https://npmmirror.com/mirrors/node`，Compose 会把它作为构建参数传入。
 
-本机安装时，`.npmrc` 已把 `better-sqlite3` 的预编译包地址指向 npmmirror；Node 20 / 22 / 24 会直接下载对应 ABI 的预编译包，不需要本机安装 Visual Studio C++。海外网络环境可删除该行，改回 GitHub Release。
+本机安装时，请确保安装依赖与启动服务使用同一个 Node 版本；Node 20 / 22 / 24 会下载对应 ABI 的 `better-sqlite3` 预编译包，不需要本机安装 Visual Studio C++。
+
+国内网络如需加速 `better-sqlite3` 预编译包下载，可在安装前临时设置环境变量（不要写进 `.npmrc`，npm 11 会对未知配置项报警）：
+
+```powershell
+$env:npm_config_better_sqlite3_binary_host = "https://registry.npmmirror.com/-/binary/better-sqlite3"
+npm ci
+```
+
+macOS / Linux：
+
+```bash
+export npm_config_better_sqlite3_binary_host=https://registry.npmmirror.com/-/binary/better-sqlite3
+npm ci
+```
+
+海外网络可直接 `npm ci`，默认从 GitHub Release 下载。
 
 ```bash
 cp .env.example .env.docker   # 只改 Docker 必填项：MYSQL_*、JWT_SECRET、CONFIG_SECRET_KEY、ADMIN_*
@@ -51,7 +87,7 @@ curl -fsS http://localhost:3000/ready
 
 ## 数据内容
 
-SETP 后端匹配 V3TM 前端，数据库内字段采用国际化配置字段，在实际使用时，需要修改种子数据内容。
+Setp 后端匹配 V3TM 前端，数据库内字段采用国际化配置字段，在实际使用时，需要修改种子数据内容。
 
 ## 工程化命令
 
@@ -73,9 +109,9 @@ SETP 后端匹配 V3TM 前端，数据库内字段采用国际化配置字段，
 | `npm run contract:export` / `contract:check` | 导出 / 校验 OpenAPI、错误码与手写路由快照 |
 | `npm run gen:module -- <name>` | 生成 controller/service/model/schema + service 单测骨架 |
 
-完整命令、目录结构、环境变量、模块说明与历史参考见 [`docs/reference/technical-spec.md`](docs/reference/technical-spec.md)。
+完整命令见上表；接口契约见下方“接口契约”；贡献流程与安全策略见 [`CONTRIBUTING.md`](CONTRIBUTING.md) 与 [`SECURITY.md`](SECURITY.md)。历史技术笔记见 [`docs/reference/technical-spec.md`](docs/reference/technical-spec.md)（仅历史参考，不再维护正文）。
 
-## 新增与增强能力（0.5.0）
+## 新增与增强能力（0.8.0）
 
 | 领域 | 能力 | 状态 |
 | --- | --- | --- |
@@ -88,7 +124,7 @@ SETP 后端匹配 V3TM 前端，数据库内字段采用国际化配置字段，
 | 运维与观测 | `/live` 与 `/ready` 分离、健康检查、运行指标、会话中心、操作日志、日志轮转、会话清理 / 索引重建 / 数据库 bundle 备份 / `reseed` | 已落地，备份逻辑有单元用例覆盖 |
 | API 契约 | 77 个 TSOA 端点 + 25 条手写路由独立快照、统一响应与 `requestId`、93 条错误码、OpenAPI / 错误码漂移校验 | 已实测 |
 | 工程化 | 一键双库切换、双库基线迁移、`createApp()` 零副作用、ESLint controller 禁触库、`withTransaction()`、模块生成器自带测试骨架 | 已实测 |
-| 交付与治理 | 三种启动方式、`docs/` 文档目录、MIT LICENSE、CONTRIBUTING、SECURITY、CHANGELOG、CODE_OF_CONDUCT、Dependabot、CodeQL、三库 CI 矩阵 | 配置已就绪；实际结果以 CI 运行记录为准 |
+| 交付与治理 | 三种启动方式、`docs/` 文档目录、MIT LICENSE、CONTRIBUTING、SECURITY、CHANGELOG、CODE_OF_CONDUCT、Dependabot、CodeQL、三库 CI 矩阵、Node 20 / 24 兼容矩阵 | 配置已就绪；实际结果以 CI 运行记录为准 |
 
 ## 质量检查
 

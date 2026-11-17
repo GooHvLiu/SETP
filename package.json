@@ -1,16 +1,16 @@
 {
   "name": "setp-backend",
-  "version": "0.5.0",
-  "description": "SETP - Express + TypeScript + TSOA + Prisma backend template",
+  "version": "0.8.0",
+  "description": "Setp - Express + TypeScript + Prisma backend template",
   "private": true,
   "main": "dist/app.js",
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/GooHvLiu/SETP.git"
+    "url": "git+https://github.com/GooHvLiu/Setp.git"
   },
-  "homepage": "https://github.com/GooHvLiu/SETP#readme",
+  "homepage": "https://github.com/GooHvLiu/Setp#readme",
   "bugs": {
-    "url": "https://github.com/GooHvLiu/SETP/issues"
+    "url": "https://github.com/GooHvLiu/Setp/issues"
   },
   "scripts": {
     "tsoa": "tsoa spec-and-routes",
@@ -64,7 +64,7 @@
     "sqlite",
     "swagger"
   ],
-  "author": "SETP Maintainers",
+  "author": "Setp Maintainers",
   "license": "MIT",
   "engines": {
     "node": ">=20.19.0"
@@ -82,12 +82,12 @@
     "bcryptjs": "^2.4.3",
     "better-sqlite3": "^12.11.1",
     "cors": "^2.8.5",
-    "dotenv": "^17.4.2",
+    "dotenv": "^18.0.10",
     "dotenv-expand": "^13.0.0",
     "express": "^4.18.2",
-    "express-rate-limit": "^7.5.0",
+    "express-rate-limit": "^8.7.4",
     "helmet": "^8.0.0",
-    "imapflow": "^1.0.0",
+    "imapflow": "^2.11.0",
     "joi": "^18.2.3",
     "jsonwebtoken": "^9.0.3",
     "module-alias": "^2.3.4",
@@ -101,7 +101,6 @@
     "swagger-ui-express": "^5.0.1",
     "tsoa": "^7.0.0-alpha.0",
     "tsx": "^4.19.2",
-    "uuid": "^11.1.1",
     "zod": "^4.6.7"
   },
   "devDependencies": {
@@ -110,7 +109,7 @@
     "@types/cors": "^2.8.19",
     "@types/express": "^4.17.21",
     "@types/jsonwebtoken": "^9.0.10",
-    "@types/multer": "^1.4.13",
+    "@types/multer": "^2.3.0",
     "@types/node": "^24.19.2",
     "@types/supertest": "^7.2.1",
     "@types/swagger-ui-express": "^4.1.8",
