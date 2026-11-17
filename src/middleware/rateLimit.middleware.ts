@@ -13,7 +13,7 @@
  * ============================================================
  */
 
-import rateLimit from "express-rate-limit";
+import rateLimit, { ipKeyGenerator } from "express-rate-limit";
 import env from "../config/env.schema";
 import { ERROR_CODE } from "../constants/errorCode";
 import { PrismaRateLimitStore } from "./rateLimitStore";
@@ -29,11 +29,11 @@ export function createRateLimiter(options: { windowMs: number; max: number }) {
   const keyPrefix = `${options.windowMs}:${options.max}`;
   return rateLimit({
     windowMs: options.windowMs,
-    max: options.max,
+    limit: options.max,
     standardHeaders: true,
     legacyHeaders: false,
     store: new PrismaRateLimitStore(),
-    keyGenerator: (req) => `${keyPrefix}:${req.ip}`,
+    keyGenerator: (req) => `${keyPrefix}:${req.ip ? ipKeyGenerator(req.ip) : "unknown"}`,
     handler: onLimitReached,
   });
 }
