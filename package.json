@@ -6,11 +6,11 @@
   "main": "dist/app.js",
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/GooHvLiu/SETP.git"
+    "url": "git+https://github.com/GooHvLiu/Setp.git"
   },
-  "homepage": "https://github.com/GooHvLiu/SETP#readme",
+  "homepage": "https://github.com/GooHvLiu/Setp#readme",
   "bugs": {
-    "url": "https://github.com/GooHvLiu/SETP/issues"
+    "url": "https://github.com/GooHvLiu/Setp/issues"
   },
   "scripts": {
     "tsoa": "tsoa spec-and-routes",
