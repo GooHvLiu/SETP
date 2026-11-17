@@ -1,6 +1,6 @@
 {
   "name": "setp-backend",
-  "version": "0.8.0",
+  "version": "0.8.1",
   "description": "Setp - Express + TypeScript + Prisma backend template",
   "private": true,
   "main": "dist/app.js",
@@ -44,6 +44,7 @@
     "contract:export": "tsx scripts/docs/export-contract.ts",
     "contract:check": "tsx scripts/docs/check-contract.ts",
     "check:response": "tsx scripts/docs/check-response-language.ts",
+    "check:lockfile": "tsx scripts/docs/check-lockfile-registry.ts",
     "gen:module": "node scripts/new-module.mjs",
     "backup": "tsx scripts/backup.ts",
     "restore": "tsx scripts/restore.ts",
@@ -51,7 +52,7 @@
     "lint": "eslint src app.ts test routes vitest.config.mts eslint.config.mjs",
     "format": "prettier --write \"app.ts\" \"src/**/*.ts\" \"test/**/*.ts\" \"scripts/**/*.ts\" \"vitest.config.mts\" \"eslint.config.mjs\" \"package.json\" \"tsconfig.json\"",
     "format:check": "prettier --check \"app.ts\" \"src/**/*.ts\" \"test/**/*.ts\" \"scripts/**/*.ts\" \"vitest.config.mts\" \"eslint.config.mjs\" \"package.json\" \"tsconfig.json\"",
-    "check": "npm run typecheck && npm run lint && npm run format:check && npm run check:response",
+    "check": "npm run typecheck && npm run lint && npm run format:check && npm run check:response && npm run check:lockfile",
     "kill:PID": "powershell -Command \"$port = 3000; $procId = (Get-NetTCPConnection -LocalPort $port -ErrorAction SilentlyContinue | Select-Object -First 1).OwningProcess; if ($procId) { taskkill /F /PID $procId } else { Write-Host 'Port 3000 is not in use' }\""
   },
   "keywords": [
