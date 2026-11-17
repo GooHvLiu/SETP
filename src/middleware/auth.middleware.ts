@@ -28,6 +28,8 @@ import { ERROR_CODE } from "../constants/errorCode";
  * 会话校验仍每次查库，保证踢下线即时生效；权限变更最多延迟一个 TTL。
  */
 const PERMISSION_CACHE_TTL_MS = 30_000;
+/** 权限缓存条目上限：防止大量一次性用户或异常流量把进程内存撑爆 */
+const PERMISSION_CACHE_MAX_ENTRIES = 10_000;
 const permissionCache = new Map<number, { permissions: string[]; expiresAt: number }>();
 
 /** 清除权限缓存；传 userId 只清该用户，不传清全部 */
@@ -37,6 +39,26 @@ export function clearPermissionCache(userId?: number): void {
     return;
   }
   permissionCache.delete(userId);
+}
+
+/**
+ * 写入权限缓存。
+ * Map 的迭代顺序就是插入顺序：达到上限时先清过期条目，再淘汰最早写入的条目，
+ * 保证缓存大小始终有界，同时不额外引入第三方 LRU 依赖。
+ */
+function setPermissionCache(userId: number, permissions: string[]): void {
+  if (permissionCache.size >= PERMISSION_CACHE_MAX_ENTRIES) {
+    const now = Date.now();
+    for (const [key, value] of permissionCache) {
+      if (value.expiresAt <= now) permissionCache.delete(key);
+    }
+    while (permissionCache.size >= PERMISSION_CACHE_MAX_ENTRIES) {
+      const oldest = permissionCache.keys().next();
+      if (oldest.done) break;
+      permissionCache.delete(oldest.value);
+    }
+  }
+  permissionCache.set(userId, { permissions, expiresAt: Date.now() + PERMISSION_CACHE_TTL_MS });
 }
 
 /**
@@ -73,7 +95,7 @@ async function getUserPermissions(userId: number): Promise<string[]> {
     }
   }
   const permissions = Array.from(permissionSet);
-  permissionCache.set(userId, { permissions, expiresAt: Date.now() + PERMISSION_CACHE_TTL_MS });
+  setPermissionCache(userId, permissions);
   return permissions;
 }
 
