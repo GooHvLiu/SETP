@@ -1,6 +1,7 @@
 # SETP 后端模板
 
 > Express + TypeScript + Prisma + TSOA 后端框架模板，开箱即用的完整工程化模板。
+文档：[贡献指南](CONTRIBUTING.md) · [安全策略](SECURITY.md) · [变更记录](CHANGELOG.md) · [接口契约](#接口契约)
 
 [![CI](https://github.com/GooHvLiu/Setp/actions/workflows/ci.yml/badge.svg?branch=main)](https://github.com/GooHvLiu/Setp/actions/workflows/ci.yml)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](LICENSE)
@@ -8,13 +9,16 @@
 
 ## 快速开始
 
-**方式一：本机 MySQL（默认）**
+\> 环境要求：Node.js >= 20.19.0；SQLite 方式无需额外数据库，MySQL 方式需要 MySQL 8.0+ 或 MariaDB 10.6+。 
+
+**方式一：SQLite 零配置（推荐首次体验）**
+
+ 适合第一次运行、只想先看接口和后台能力的情况，不需要安装 MySQL。 
 
 ```bash
-cp .env.example .env       # 默认 DB_TYPE=mysql
-# 修改 DATABASE_URL 为实际 MySQL 地址，并提前建空库
 npm ci
-npm start                  # init → db:prepare → 生产构建 → node dist/app.js
+npm run db:rebuild   # 没有 .env 时自动按 SQLite 生成
+npm start
 # API: http://localhost:3000
 # Swagger: http://localhost:3000/api-docs（NODE_ENV=production 时关闭）
 ```
@@ -23,12 +27,16 @@ npm start                  # init → db:prepare → 生产构建 → node dist/
 
 > 迁移或复制项目时只复制源码与 `package*.json`，不要复制 `node_modules`。Windows 下旧目录里的锁定文件会让 `npm install` 清理阶段报 `EPERM`；到新目录后重新执行 `npm install` 即可。
 
-**方式二：SQLite 零配置体验**
+**方式二：本机 MySQL**
 
 ```bash
+cp .env.example .env       # macOS / Linux
+# Windows PowerShell: Copy-Item .env.example .env
+# 修改 DATABASE_URL 为实际 MySQL 地址，并提前建空库
 npm ci
-npm run db:rebuild   # 没有 .env 时自动按 SQLite 生成
-npm start
+npm start                  # init → db:prepare → 生产构建 → node dist/app.js
+# API: http://localhost:3000
+# Swagger: http://localhost:3000/api-docs（NODE_ENV=production 时关闭）
 ```
 
 **方式三：Docker Compose**
