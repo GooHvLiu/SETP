@@ -2,14 +2,14 @@
  * ============================================================
  * 图形验证码服务（modules/captcha/captcha.service.ts）
  * ------------------------------------------------------------
- * 生成 SVG 验证码 + 内存缓存（uuid 绑定答案，2 分钟过期）
+ * 生成 SVG 验证码 + 内存缓存（随机 ID 绑定答案，2 分钟过期）
  * 一次性有效，校验通过后立即销毁
  * 注意：多实例部署时验证码建议换 Redis 存储（内存为单机方案）
  * ============================================================
  */
 
 import svgCaptcha from "svg-captcha";
-import { v4 as uuidv4 } from "uuid";
+import { randomUUID } from "crypto";
 
 /** 验证码缓存项 */
 interface CaptchaCacheItem {
@@ -17,7 +17,7 @@ interface CaptchaCacheItem {
   expire: number;
 }
 
-/** 内存存储：uuid -> 验证码答案 */
+/** 内存存储：captchaId -> 验证码答案 */
 const captchaStore = new Map<string, CaptchaCacheItem>();
 
 class CaptchaService {
@@ -36,7 +36,7 @@ class CaptchaService {
       height: 40,
     });
 
-    const captchaId = uuidv4();
+    const captchaId = randomUUID();
     captchaStore.set(captchaId, {
       code: cap.text.toLowerCase(),
       expire: Date.now() + 2 * 60 * 1000,

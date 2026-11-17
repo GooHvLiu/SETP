@@ -16,7 +16,7 @@
 import fs from "fs";
 import multer from "multer";
 import path from "path";
-import { v4 as uuidv4 } from "uuid";
+import { randomUUID } from "crypto";
 import uploadConfig from "../config/upload.config";
 import { getConfigNumber } from "../config/runtimeConfig";
 import { ensureDir } from "../utils/file";
@@ -24,15 +24,15 @@ import { ensureDir } from "../utils/file";
 // 确保上传目录存在
 ensureDir(uploadConfig.dir);
 
-/** 存储配置：磁盘存储，文件名用 uuid 重命名避免冲突 */
+/** 存储配置：磁盘存储，文件名用随机 UUID 重命名避免冲突 */
 const storage = multer.diskStorage({
   destination: (req, file, cb) => {
     cb(null, uploadConfig.dir);
   },
   filename: (req, file, cb) => {
-    // 保留原文件扩展名，文件名用 uuid
+    // 保留原文件扩展名，文件名用随机 UUID
     const ext = path.extname(file.originalname);
-    cb(null, `${uuidv4()}${ext}`);
+    cb(null, `${randomUUID()}${ext}`);
   },
 });
 

@@ -4599,13 +4599,13 @@
   },
   "info": {
     "title": "setp-backend",
-    "version": "0.5.0",
-    "description": "SETP - Express + TypeScript + TSOA + Prisma backend template",
+    "version": "0.8.0",
+    "description": "Setp - Express + TypeScript + Prisma backend template",
     "license": {
       "name": "MIT"
     },
     "contact": {
-      "name": "SETP Maintainers"
+      "name": "Setp Maintainers"
     }
   },
   "paths": {

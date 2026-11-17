@@ -136,6 +136,58 @@ jobs:
             kill "$(cat server.pid)" || true
           fi
           cat server.log || true
+  compat:
+    name: compat (node ${{ matrix.node }})
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    strategy:
+      fail-fast: false
+      matrix:
+        node: [20.19.0, 24]
+    env:
+      CI: true
+      NODE_ENV: test
+      APP_PORT: 3107
+      DB_TYPE: sqlite
+      DATABASE_URL: file:./data/ci-node.db
+      JWT_SECRET: ci-only-jwt-secret-0123456789abcdef
+      CONFIG_SECRET_KEY: ci-only-config-secret-0123456789abcdef
+      ADMIN_USERNAME: admin
+      ADMIN_PASSWORD: "123456"
+      SUPER_ADMIN_PASSWORD: "superAdmin123456@"
+      ADMIN_RESET_PASSWORD: "123456"
+      LOGIN_RATE_LIMIT_MAX: "100"
+      LOGIN_RATE_LIMIT_WINDOW_MIN: "1"
+      RATE_LIMIT_MAX: "10000"
+      LOG_CONSOLE: "false"
+    steps:
+      - uses: actions/checkout@v7
+
+      - uses: actions/setup-node@v7
+        with:
+          node-version: ${{ matrix.node }}
+          cache: npm
+
+      - name: Install dependencies
+        run: npm ci --no-audit --no-fund
+
+      - name: Generate Prisma Client
+        run: npm run db:generate
+
+      - name: Generate TSOA routes and OpenAPI
+        run: npm run tsoa
+
+      - name: Static quality gates
+        run: npm run check
+
+      - name: Prepare database
+        run: npm run db:prepare
+
+      - name: Run unit tests
+        run: npm run test:unit
+
+      - name: Build production bundle
+        run: npm run build
 
   docker:
     name: docker-image

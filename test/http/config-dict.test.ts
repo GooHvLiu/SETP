@@ -82,7 +82,7 @@ describe("配置与字典边界", () => {
     const validBatch = await request(app)
       .post("/api/v1/super-admin/settings/batch")
       .set(auth())
-      .send({ items: [{ key: "site_name", value: "SETP" }] })
+      .send({ items: [{ key: "site_name", value: "Setp" }] })
       .expect(200);
     expect(validBatch.body.code).toBe(200);
   });
