@@ -21,7 +21,7 @@
 
 ## 快速开始
 
-> 环境要求：Node.js >= 20.19.0；SQLite 方式无需额外数据库，MySQL 方式需要 MySQL 8.0+ 或 MariaDB 10.6+。
+> 环境要求：Node.js >= 20.19.0，推荐 Node 24 LTS；安装依赖与运行服务必须使用同一个 Node 版本，否则 `better-sqlite3` 会报 `NODE_MODULE_VERSION` 不匹配。SQLite 方式无需额外数据库，MySQL 方式需要 MySQL 8.0+ 或 MariaDB 10.6+。
 
 **方式一：SQLite 零配置（推荐首次体验）**
 
@@ -57,7 +57,23 @@ Compose 需要 `MYSQL_ROOT_PASSWORD`、`MYSQL_PASSWORD`、`JWT_SECRET`、`CONFIG
 
 `better-sqlite3` 在 Alpine 上无预编译包时会回退源码编译。默认从 `nodejs.org` 下载 Node 头文件；国内网络可在 `.env.docker` 增加 `NODE_DIST_URL=https://npmmirror.com/mirrors/node`，Compose 会把它作为构建参数传入。
 
-本机安装时，`.npmrc` 已把 `better-sqlite3` 的预编译包地址指向 npmmirror；Node 20 / 22 / 24 会直接下载对应 ABI 的预编译包，不需要本机安装 Visual Studio C++。海外网络环境可删除该行，改回 GitHub Release。
+本机安装时，请确保安装依赖与启动服务使用同一个 Node 版本；Node 20 / 22 / 24 会下载对应 ABI 的 `better-sqlite3` 预编译包，不需要本机安装 Visual Studio C++。
+
+国内网络如需加速 `better-sqlite3` 预编译包下载，可在安装前临时设置环境变量（不要写进 `.npmrc`，npm 11 会对未知配置项报警）：
+
+```powershell
+$env:npm_config_better_sqlite3_binary_host = "https://registry.npmmirror.com/-/binary/better-sqlite3"
+npm ci
+```
+
+macOS / Linux：
+
+```bash
+export npm_config_better_sqlite3_binary_host=https://registry.npmmirror.com/-/binary/better-sqlite3
+npm ci
+```
+
+海外网络可直接 `npm ci`，默认从 GitHub Release 下载。
 
 ```bash
 cp .env.example .env.docker   # 只改 Docker 必填项：MYSQL_*、JWT_SECRET、CONFIG_SECRET_KEY、ADMIN_*
