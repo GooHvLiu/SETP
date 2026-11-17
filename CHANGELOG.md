@@ -9,7 +9,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Added
 
-- Express + TypeScript + Prisma + TSOA backend template with SQLite / MySQL / MariaDB support.
+- Express + TypeScript + Prisma backend template with SQLite / MySQL / MariaDB support.
 - Access / refresh token authentication, session revocation and RBAC menus, roles and permissions.
 - System configuration center, dictionaries, operation logs, notifications, mail, help center, metrics and ops tasks.
 - OpenAPI and handwritten route contract snapshots under `docs/api`.

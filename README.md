@@ -1,6 +1,6 @@
-# SETP 后端模板
+# Setp 后端模板
 
-> Express + TypeScript + Prisma + TSOA 后端框架模板，开箱即用的完整工程化模板。
+> Express + TypeScript + Prisma 后端 Server 框架模板，开箱即用的完整工程化模板。
 
 文档：[贡献指南](CONTRIBUTING.md) · [安全策略](SECURITY.md) · [变更记录](CHANGELOG.md) · [接口契约](#接口契约)
 
@@ -87,7 +87,7 @@ curl -fsS http://localhost:3000/ready
 
 ## 数据内容
 
-SETP 后端匹配 V3TM 前端，数据库内字段采用国际化配置字段，在实际使用时，需要修改种子数据内容。
+Setp 后端匹配 V3TM 前端，数据库内字段采用国际化配置字段，在实际使用时，需要修改种子数据内容。
 
 ## 工程化命令
 

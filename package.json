@@ -1,7 +1,7 @@
 {
   "name": "setp-backend",
   "version": "0.5.0",
-  "description": "SETP - Express + TypeScript + TSOA + Prisma backend template",
+  "description": "Setp - Express + TypeScript + Prisma backend template",
   "private": true,
   "main": "dist/app.js",
   "repository": {
@@ -64,7 +64,7 @@
     "sqlite",
     "swagger"
   ],
-  "author": "SETP Maintainers",
+  "author": "Setp Maintainers",
   "license": "MIT",
   "engines": {
     "node": ">=20.19.0"
