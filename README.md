@@ -4,13 +4,26 @@
 
 文档：[贡献指南](CONTRIBUTING.md) · [安全策略](SECURITY.md) · [变更记录](CHANGELOG.md) · [接口契约](#接口契约)
 
-[![CI](https://github.com/GooHvLiu/Setp/actions/workflows/ci.yml/badge.svg?branch=main)](https://github.com/GooHvLiu/Setp/actions/workflows/ci.yml)
-[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](LICENSE)
-[![Node](https://img.shields.io/badge/node-%3E%3D20.19-339933)](package.json)
+[![CI](https://github.com/GooHvLiu/Setp/actions/workflows/ci.yml/badge.svg?branch=main)](https://github.com/GooHvLiu/Setp/actions/workflows/ci.yml)[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](LICENSE)[![Node](https://img.shields.io/badge/node-%3E%3D20.19-339933)](package.json)
+
+## 使用模板
+
+如果要基于本模板开始一个新项目，推荐用 GitHub 的模板流程，而不是直接 fork：
+1. 在仓库页面点 **Use this template / 使用此模板** → **Create a new repository / 创建新仓库**。
+2. 把新仓库克隆到本地:`git clone https://github.com/<your-account>/<your-repo>.git`
+3. 先按 “快速开始” 的 SQLite 方式跑通，再按需切换到 MySQL。
+4. 修改 `package.json` 的 `name`、`description`，以及 README 标题和仓库地址。
+5. 正式部署前替换模板默认密码，见[模板密码](#模板密码)。
+6. 保留 `LICENSE` 中的 MIT 许可与版权声明；修改或再分发时按 MIT 要求保留原声明。
+
+> 只想学习或评估模板时，可以直接 clone 本仓库；要开始自己的项目时，再用 **Use this template**。
+
+
+
 
 ## 快速开始
 
-> 环境要求：Node.js >= 20.19.0；SQLite 方式无需额外数据库，MySQL 方式需要 MySQL 8.0+ 或 MariaDB 10.6+。 
+> 环境要求：Node.js >= 20.19.0；SQLite 方式无需额外数据库，MySQL 方式需要 MySQL 8.0+ 或 MariaDB 10.6+。
 
 **方式一：SQLite 零配置（推荐首次体验）**
 
