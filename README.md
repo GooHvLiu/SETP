@@ -105,13 +105,13 @@ Setp 后端匹配 V3TM 前端，数据库内字段采用国际化配置字段，
 | `npm run backup` | 备份主库 + `data/help.db` + `data/help` 为 bundle 目录，按 `BACKUP_KEEP` 保留份数 |
 | `npm run restore -- --file <备份> --yes` | 恢复主库与帮助中心；SQLite 覆盖前自动留 `.before-restore` 副本 |
 | `npm run test:api` | 启动服务后的 57 项全量 HTTP 冒烟 |
-| `npm run check` | `typecheck` + `lint` + `format:check` |
+| `npm run check` | `typecheck` + `lint` + `format:check` + 响应结构 + 锁文件官方源 |
 | `npm run contract:export` / `contract:check` | 导出 / 校验 OpenAPI、错误码与手写路由快照 |
 | `npm run gen:module -- <name>` | 生成 controller/service/model/schema + service 单测骨架 |
 
 完整命令见上表；接口契约见下方“接口契约”；贡献流程与安全策略见 [`CONTRIBUTING.md`](CONTRIBUTING.md) 与 [`SECURITY.md`](SECURITY.md)。历史技术笔记见 [`docs/reference/technical-spec.md`](docs/reference/technical-spec.md)（仅历史参考，不再维护正文）。
 
-## 新增与增强能力（0.8.0）
+## 新增与增强能力（0.8.1）
 
 | 领域 | 能力 | 状态 |
 | --- | --- | --- |
@@ -123,7 +123,7 @@ Setp 后端匹配 V3TM 前端，数据库内字段采用国际化配置字段，
 | 帮助中心 | 多语言文档空间、文档位管理、Markdown / PDF 正文、原文件读取、全文索引与重建、manifest 清单 | 已落地，管理端 HTTP 已实测 |
 | 运维与观测 | `/live` 与 `/ready` 分离、健康检查、运行指标、会话中心、操作日志、日志轮转、会话清理 / 索引重建 / 数据库 bundle 备份 / `reseed` | 已落地，备份逻辑有单元用例覆盖 |
 | API 契约 | 77 个 TSOA 端点 + 25 条手写路由独立快照、统一响应与 `requestId`、93 条错误码、OpenAPI / 错误码漂移校验 | 已实测 |
-| 工程化 | 一键双库切换、双库基线迁移、`createApp()` 零副作用、ESLint controller 禁触库、`withTransaction()`、模块生成器自带测试骨架 | 已实测 |
+| 工程化 | 一键双库切换、双库基线迁移、`createApp()` 零副作用、ESLint controller 禁触库、`withTransaction()`、模块生成器自带测试骨架、锁文件官方源校验 | 已实测 |
 | 交付与治理 | 三种启动方式、`docs/` 文档目录、MIT LICENSE、CONTRIBUTING、SECURITY、CHANGELOG、CODE_OF_CONDUCT、Dependabot、CodeQL、三库 CI 矩阵、Node 20 / 24 兼容矩阵 | 配置已就绪；实际结果以 CI 运行记录为准 |
 
 ## 质量检查

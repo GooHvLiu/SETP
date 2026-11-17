@@ -5,6 +5,19 @@ All notable changes to this project are documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [0.8.1] - 2026-11-17
+
+Patch release for public install portability.
+
+### Added
+
+- `check:lockfile` static quality gate that rejects non-official registry URLs in `package-lock.json`.
+
+### Changed
+
+- Normalized every `resolved` URL in `package-lock.json` to `https://registry.npmjs.org`, so public installs no longer follow a regional mirror.
+- Release metadata and the generated OpenAPI contract now report `0.8.1`.
+
 ## [0.8.0] - 2026-11-17
 
 First public release of the Setp backend template.
