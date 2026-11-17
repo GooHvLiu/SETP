@@ -6,11 +6,11 @@
   "main": "dist/app.js",
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/GooHvLiu/SETP.git"
+    "url": "git+https://github.com/GooHvLiu/Setp.git"
   },
-  "homepage": "https://github.com/GooHvLiu/SETP#readme",
+  "homepage": "https://github.com/GooHvLiu/Setp#readme",
   "bugs": {
-    "url": "https://github.com/GooHvLiu/SETP/issues"
+    "url": "https://github.com/GooHvLiu/Setp/issues"
   },
   "scripts": {
     "tsoa": "tsoa spec-and-routes",
@@ -82,7 +82,7 @@
     "bcryptjs": "^2.4.3",
     "better-sqlite3": "^12.11.1",
     "cors": "^2.8.5",
-    "dotenv": "^17.4.2",
+    "dotenv": "^18.0.10",
     "dotenv-expand": "^13.0.0",
     "express": "^4.18.2",
     "express-rate-limit": "^7.5.0",
