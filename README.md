@@ -2,7 +2,7 @@
 
 > Express + TypeScript + Prisma + TSOA 后端框架模板，开箱即用的完整工程化模板。
 
-[![CI](https://github.com/GooHvLiu/SETP/actions/workflows/ci.yml/badge.svg?branch=main)](https://github.com/GooHvLiu/SETP/actions/workflows/ci.yml)
+[![CI](https://github.com/GooHvLiu/Setp/actions/workflows/ci.yml/badge.svg?branch=main)](https://github.com/GooHvLiu/Setp/actions/workflows/ci.yml)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](LICENSE)
 [![Node](https://img.shields.io/badge/node-%3E%3D20.19-339933)](package.json)
 
@@ -73,7 +73,8 @@ SETP 后端匹配 V3TM 前端，数据库内字段采用国际化配置字段，
 | `npm run contract:export` / `contract:check` | 导出 / 校验 OpenAPI、错误码与手写路由快照 |
 | `npm run gen:module -- <name>` | 生成 controller/service/model/schema + service 单测骨架 |
 
-完整命令、目录结构、环境变量、模块说明与历史参考见 [`docs/reference/technical-spec.md`](docs/reference/technical-spec.md)。
+完整命令见上表；接口契约见下方“接口契约”；贡献流程与安全策略见 [`CONTRIBUTING.md`](CONTRIBUTING.md) 与 [`SECURITY.md`](SECURITY.md)。历史技术笔记见 [`docs/reference/technical-spec.md`](docs/reference/technical-spec.md)（仅历史参考，不再维护正文）。
+
 
 ## 新增与增强能力（0.5.0）
 
