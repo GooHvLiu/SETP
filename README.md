@@ -109,7 +109,7 @@ Setp 后端匹配 V3TM 前端，数据库内字段采用国际化配置字段，
 | `npm run contract:export` / `contract:check` | 导出 / 校验 OpenAPI、错误码与手写路由快照 |
 | `npm run gen:module -- <name>` | 生成 controller/service/model/schema + service 单测骨架 |
 
-完整命令见上表；接口契约见下方“接口契约”；贡献流程与安全策略见 [`CONTRIBUTING.md`](CONTRIBUTING.md) 与 [`SECURITY.md`](SECURITY.md)。历史技术笔记见 [`docs/reference/technical-spec.md`](docs/reference/technical-spec.md)（仅历史参考，不再维护正文）。
+完整命令见上表；接口契约见下方“接口契约”；贡献流程与安全策略见 [`CONTRIBUTING.md`](CONTRIBUTING.md) 与 [`SECURITY.md`](SECURITY.md)；文档索引见 [`docs/README.md`](docs/README.md)。
 
 ## 新增与增强能力（0.8.3）
 
