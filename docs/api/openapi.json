@@ -3946,6 +3946,78 @@
         "type": "object",
         "additionalProperties": false
       },
+      "DashboardTrendPoint": {
+        "description": "单日操作趋势点",
+        "properties": {
+          "date": {
+            "type": "string",
+            "description": "日期，YYYY-MM-DD"
+          },
+          "count": {
+            "type": "number",
+            "format": "double",
+            "description": "当日操作条数"
+          }
+        },
+        "required": [
+          "date",
+          "count"
+        ],
+        "type": "object",
+        "additionalProperties": false
+      },
+      "DashboardTrend": {
+        "description": "看板趋势结果",
+        "properties": {
+          "points": {
+            "items": {
+              "$ref": "#/components/schemas/DashboardTrendPoint"
+            },
+            "type": "array",
+            "description": "按日期升序，固定 7 条"
+          }
+        },
+        "required": [
+          "points"
+        ],
+        "type": "object",
+        "additionalProperties": false
+      },
+      "ApiResponse_DashboardTrend_": {
+        "description": "统一 API 响应结构\ncontroller 方法统一 return 该结构，由路由层 res.json() 输出",
+        "properties": {
+          "code": {
+            "type": "number",
+            "format": "double"
+          },
+          "msg": {
+            "type": "string"
+          },
+          "params": {
+            "$ref": "#/components/schemas/Record_string.string-or-number-or-boolean_",
+            "description": "文案插值参数，前端 i18n 用 msg + params 渲染，不返回自然语言"
+          },
+          "data": {
+            "$ref": "#/components/schemas/DashboardTrend"
+          },
+          "timestamp": {
+            "type": "number",
+            "format": "double"
+          },
+          "requestId": {
+            "type": "string",
+            "description": "请求链路 ID，便于前后端按同一条日志排查"
+          }
+        },
+        "required": [
+          "code",
+          "msg",
+          "data",
+          "timestamp"
+        ],
+        "type": "object",
+        "additionalProperties": false
+      },
       "Record_string.unknown_": {
         "properties": {},
         "additionalProperties": {},
@@ -4599,7 +4671,7 @@
   },
   "info": {
     "title": "setp-backend",
-    "version": "0.8.1",
+    "version": "0.8.3",
     "description": "Setp - Express + TypeScript + Prisma backend template",
     "license": {
       "name": "MIT"
@@ -7635,6 +7707,35 @@
             }
           }
         ]
+      }
+    },
+    "/api/v1/dashboard/trend": {
+      "get": {
+        "operationId": "Trend",
+        "responses": {
+          "200": {
+            "description": "Ok",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiResponse_DashboardTrend_"
+                }
+              }
+            }
+          }
+        },
+        "description": "近七日操作条数，折线与柱状共用同一份数据",
+        "tags": [
+          "Dashboard - 看板"
+        ],
+        "security": [
+          {
+            "bearerAuth": [
+              "dashBoard:list"
+            ]
+          }
+        ],
+        "parameters": []
       }
     },
     "/api/v1/super-admin/settings": {
