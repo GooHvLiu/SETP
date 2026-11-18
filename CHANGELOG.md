@@ -5,6 +5,22 @@ All notable changes to this project are documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [0.8.3] - 2026-11-18
+
+Feature release for the dashboard trend contract.
+
+### Added
+
+- `GET /api/v1/dashboard/trend` returning exactly 7 ascending natural-day points, with missing days filled as `count: 0`.
+- Dashboard trend only counts `operation_logs.category = "operation"`; login records are excluded.
+- Unit coverage for the 7-day window builder and HTTP coverage for the 7-point contract plus the `dashBoard:list` 403 boundary.
+
+### Changed
+
+- Runtime logging stack moved to `pino` 10 and `pino-http` 11 together; `pino-http` 11 alone is incompatible with the previous `pino` 9 logger.
+- README endpoint inventory now reports 78 TSOA endpoints and documents the dashboard trend capability.
+- Release metadata and the generated OpenAPI contract now report `0.8.3`.
+
 ## [0.8.1] - 2026-11-17
 
 Patch release for public install portability.
