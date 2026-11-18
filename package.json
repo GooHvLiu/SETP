@@ -1,6 +1,6 @@
 {
   "name": "setp-backend",
-  "version": "0.8.1",
+  "version": "0.8.3",
   "description": "Setp - Express + TypeScript + Prisma backend template",
   "private": true,
   "main": "dist/app.js",
@@ -95,8 +95,8 @@
     "multer": "^2.4.0",
     "nodemailer": "^10.5.0",
     "pdf-parse": "^1.1.1",
-    "pino": "^9.5.0",
-    "pino-http": "^10.3.0",
+    "pino": "^10.4.0",
+    "pino-http": "^11.0.0",
     "prisma": "^7.10.0",
     "svg-captcha": "^1.4.0",
     "swagger-ui-express": "^5.0.1",
