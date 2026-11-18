@@ -10,8 +10,6 @@
 - [变更记录](../CHANGELOG.md)
 - [接口契约](api/openapi.json)
 - [手写路由快照](api/manual-routes.json)
-- [历史技术索引](reference/technical-spec.md)
-- [历史资料归档](archive/README.md)
 
 ## 维护约定
 
@@ -20,4 +18,3 @@
 - 个人草稿放 `docs/private/`，并把 `docs/private/` 写入 `.git/info/exclude`；不要提交到仓库。
 - 已跟踪但不希望继续公开的文件，用 `git rm --cached <file>` 停止跟踪，再写入忽略规则；历史提交仍保留内容。
 - 如果历史内容含真实密钥、密码或客户数据，按泄露处理：先轮换密钥，再评估是否用 `git filter-repo` 清理历史。
-- 归档资料统一放 `docs/archive/`，文件开头标注“历史资料，不再维护”，并在本目录索引中说明。

@@ -18,6 +18,10 @@ prisma/schema.mysql.prisma
 !docs/api/
 docs/api/error-codes.json
 
+# 仅本地保留的历史资料，不进入公开模板
+docs/archive/
+docs/reference/
+
 # 运行时数据（保留目录占位，忽略库文件）
 data/*
 !data/.gitkeep
