@@ -5,6 +5,15 @@ All notable changes to this project are documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [0.8.5] - 2026-11-19
+
+Release that brings `main` and `develop` back to a single backend baseline.
+
+### Changed
+
+- `main` and `develop` now share the dashboard trend contract, middleware hardening, dependency updates, OpenAPI snapshot, tests and documentation.
+- Release metadata and the generated OpenAPI contract now report `0.8.5`.
+
 ## [0.8.3] - 2026-11-18
 
 Feature release for the dashboard trend contract.

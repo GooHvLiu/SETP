@@ -114,7 +114,7 @@ Setp 后端匹配 V3TM 前端，数据库内字段采用国际化配置字段，
 
 完整命令见上表；接口契约见下方“接口契约”；贡献流程与安全策略见 [`CONTRIBUTING.md`](CONTRIBUTING.md) 与 [`SECURITY.md`](SECURITY.md)；文档索引见 [`docs/README.md`](docs/README.md)。
 
-## 新增与增强能力（0.8.3）
+## 新增与增强能力（0.8.5）
 
 | 领域 | 能力 | 状态 |
 | --- | --- | --- |
