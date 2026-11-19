@@ -7,7 +7,7 @@
     "specVersion": 3,
     "info": {
       "title": "setp-backend",
-      "version": "0.8.3",
+      "version": "0.8.5",
       "description": "Setp - Express + TypeScript + Prisma Backend Template"
     },
     "securityDefinitions": {
