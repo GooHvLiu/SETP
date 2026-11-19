@@ -28,6 +28,7 @@
 适合第一次运行、只想先看接口和后台能力的情况，不需要安装 MySQL。
 
 ```bash
+npm install
 npm ci
 npm run db:rebuild   # 没有 .env 时自动按 SQLite 生成
 npm start
@@ -38,6 +39,8 @@ npm start
 默认管理员 `admin / 123456`，超级管理员 `superAdmin / superAdmin123456@`；正式部署前必须通过 `.env` 或 Compose 环境变量替换。
 
 > 迁移或复制项目时只复制源码与 `package*.json`，不要复制 `node_modules`。Windows 下旧目录里的锁定文件会让 `npm install` 清理阶段报 `EPERM`；到新目录后重新执行 `npm install` 即可。
+>
+>  若安装失败，请`Remove-Item -Recurse -Force node_modules`然后`npm install better-sqlite3 --sqlite3_binary_host_mirror=https://github.com/WiseLibs/better-sqlite3/releases/download`
 
 **方式二：本机 MySQL**
 
