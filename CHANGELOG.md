@@ -5,6 +5,21 @@ All notable changes to this project are documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [0.8.7] - 2026-11-20
+
+Release that publishes the static API documentation and clears the production audit finding without changing the HTTP contract.
+
+### Added
+
+- Static Swagger UI under `docs/`, served by GitHub Pages at `https://goohvliu.github.io/Setp/`, with `Try it out` disabled and the OpenAPI snapshot loaded from `docs/api/openapi.json`.
+- `docs/.nojekyll` so the Pages build serves the static assets directly.
+
+### Changed
+
+- `package.json` now overrides `effect` to `3.22.5`, clearing the high-severity ReDoS advisory `GHSA-7589-6fvf-x4pw` reported by `npm audit --omit=dev --audit-level=high`.
+- `package-lock.json` pins `effect` to the official npm registry URL.
+- Release metadata and the generated OpenAPI contract now report `0.8.7`.
+
 ## [0.8.5] - 2026-11-19
 
 Release that brings `main` and `develop` back to a single backend baseline.
