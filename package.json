@@ -74,7 +74,8 @@
     "better-sqlite3": "$better-sqlite3",
     "glob": "14.0.6",
     "minimatch": "11.0.8",
-    "ts-deepmerge": "8.0.0"
+    "ts-deepmerge": "8.0.0",
+    "effect": "3.22.5"
   },
   "dependencies": {
     "@prisma/adapter-better-sqlite3": "^7.10.0",
