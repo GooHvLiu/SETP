@@ -1,6 +1,6 @@
 {
   "name": "setp-backend",
-  "version": "0.8.5",
+  "version": "0.8.7",
   "description": "Setp - Express + TypeScript + Prisma backend template",
   "private": true,
   "main": "dist/app.js",
